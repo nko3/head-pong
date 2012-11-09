@@ -1,0 +1,19 @@
+{
+  "name": "nko3-staunch-team",
+  "version": "0.0.0",
+  "description": "Staunch Team",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:nko3/staunch-team.git"
+  },
+  "dependencies": {
+  },
+  "engines": {
+    "node": "0.8.x"
+  },
+  "subdomain": "staunch-team.nko3"
+}
