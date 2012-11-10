@@ -11,7 +11,8 @@
     "url": "git@github.com:nko3/staunch-team.git"
   },
   "dependencies": {
-    "express": "3.x"
+    "express": "3.x",
+    "node-live-reload": "0.0.3"
   },
   "engines": {
     "node": "0.8.x"
