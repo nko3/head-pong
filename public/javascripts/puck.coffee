@@ -6,20 +6,37 @@ class Puck
     @x += @dx
     @y += @dy
 
-    if this.x < @radius || this.x > canvas.width - @radius
-      this.dx *= -1
-    if this.y < @radius || this.y > canvas.height - @radius
-      this.dy *= -1
+    if @x < @radius
+      @x = @radius
+      @dx *= -1
+    if @x > canvas.width - @radius
+      @x = canvas.width - @radius
+      @dx *= -1
+    if @y < @radius
+      reset()
+    if @y > canvas.height - @radius
+      reset()
 
-    if this.x < @radius then this.x = @radius
-    if this.x > canvas.width - @radius then this.x = canvas.width - @radius
-    if this.y < @radius then this.y = @radius
-    if this.y > canvas.height - @radius then this.y = canvas.height - @radius
+    if @collidedWith(paddle1)
+      @dy = Math.abs(@dy)
+      @y = paddle1.y + paddle1.height/2 + @radius
+
+    if @collidedWith(paddle2)
+      @dy = Math.abs(@dy) * -1
+      @y = paddle2.y - paddle2.height/2 - @radius
+
+  collidedWith: (paddle) ->
+    if @x - @radius < paddle.x + paddle.width/2 && @x + @radius > paddle.x - paddle.width/2
+      if @y - @radius < paddle.y + paddle.height/2 && @y > paddle.y
+        return true
+      if @y + @radius > paddle.y - paddle.height/2 && @y < paddle.y
+        return true
+    return false
 
   draw: (fillStyle = @color) ->
-      ctx.fillStyle = fillStyle;
-      ctx.beginPath()
-      ctx.arc(@x, @y, @radius, 0, Math.PI * 2, false)
-      ctx.fill()
+    ctx.fillStyle = fillStyle;
+    ctx.beginPath()
+    ctx.arc(@x, @y, @radius, 0, Math.PI * 2, false)
+    ctx.fill()
 
 module.exports = Puck
