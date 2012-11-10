@@ -4,7 +4,6 @@ mainLoop = () ->
   drawBackground()
   paddle1.updateFromMouse()
   paddle1.draw()
-  paddle2.updateFromComputer()
   paddle2.draw()
   puck.draw()
   puck.move()
