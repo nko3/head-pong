@@ -1,6 +1,6 @@
 class Puck
-  constructor: (@x, @y, @dx, @dy, @radius, @color) ->
-
+  constructor: (@x, @y, @dx, @dy, @radius) ->
+    @color = 'black'
 
   move: ->
     @x += @dx
@@ -16,7 +16,7 @@ class Puck
     if this.y < @radius then this.y = @radius
     if this.y > canvas.height - @radius then this.y = canvas.height - @radius
 
-  draw: (ctx, fillStyle = @color, shadow = false) ->
+  draw: (fillStyle = @color) ->
       ctx.fillStyle = fillStyle;
       ctx.beginPath()
       ctx.arc(@x, @y, @radius, 0, Math.PI * 2, false)
