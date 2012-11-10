@@ -37,17 +37,14 @@
 
   io.sockets.on('connection', function(socket) {
     console.log('you have connected');
-    socket.on('movement', function(x) {
-      socket.emit('news', 'hey');
-      console.log(x);
-      return socket.emit('news', 'bye');
-    });
     socket.on('paddle_hit', function() {
       return console.log('ball hit by paddle');
     });
     return socket.on('mouse_pos', function(x) {
-      console.log('received mouse position: ' + x);
-      return socket.emit('paddle_pos', x);
+      socket.emit('paddle_1_pos', x);
+      return setTimeout(function() {
+        return socket.emit('paddle_2_pos', x);
+      }, 1000);
     });
   });
 

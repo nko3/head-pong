@@ -1,11 +1,8 @@
 class Paddle
   constructor: (@x, @y, @width, @height, @color) ->
-    socket.on 'paddle_pos', (x) =>
-      @x = x
 
   updateFromMouse: ->
-    @x = mousex || @x
-    socket.emit('mouse_pos', @x)
+    socket.emit('mouse_pos', mousex || @x)
 
   draw: ->
     ctx.fillStyle = @color

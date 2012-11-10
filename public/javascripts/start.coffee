@@ -1,12 +1,14 @@
 mainLoop = () ->
   window.requestAnimationFrame ->
     mainLoop()
-  drawBackground()
   paddle1.updateFromMouse()
+  puck.move()
+
+
+  drawBackground()
   paddle1.draw()
   paddle2.draw()
   puck.draw()
-  puck.move()
 
 drawBackground = ->
   color = 128
