@@ -1,4 +1,5 @@
 window.onload = function(){
+  require('./socket')
   require('./jquery')
   require('./mouse')
   require('./animationFrame')
