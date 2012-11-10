@@ -11,6 +11,9 @@
     "url": "git@github.com:nko3/staunch-team.git"
   },
   "dependencies": {
+    "coffee-script": "~1.4.0"
+  },
+  "devDependencies": {
     "node-live-reload": "0.0.3"
   },
   "engines": {
