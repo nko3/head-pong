@@ -1,19 +1,27 @@
+window.URL = window.URL || window.webkitURL;
 
-shimGetUserMedia = ->
+getUserMedia = (options, success, error) ->
+  getUserMedia = window.navigator.getUserMedia || window.navigator.mozGetUserMedia || window.navigator.webkitGetUserMedia || (options, success, error) -> error()
+  getUserMedia.call(window.navigator, options, success, error)
+
+hasGetUserMedia = ->
   navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
 
 not_supported = ->
-  $("#message").html("We're using cool stuff, so you need to move to a decent browser, like chrome.")
+  show_msg "We're using cool stuff, so you need to move to a decent browser, like chrome."
 
-if shimGetUserMedia
-  shimGetUserMedia {video: true, audio:true}, (media_stream) ->
-    alert "got it"
-  ,
-  not_available
+if hasGetUserMedia
+  getUserMedia { video: true }, got_camera, fallback
+else
+  not_supported
 
-not_available = ->
-  $("#message").html("Not able to connect with your camera device, did you authorized us?")
+got_camera = (stream) ->
+  alert "ok!"
+  $("video").src = window.URL.createObjectURL(stream)
 
-//
-  handle_device = stream ->
-    alert "just got the stream!"
+fallback = (e) ->
+  alert "err: #{e}"
+  show_msg "Not able to connect with your camera device, did you authorized us?"
+
+show_msg = (message) ->
+  $("#message").html message
