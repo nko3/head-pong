@@ -13,11 +13,9 @@ class Puck
       @x = canvas.width - @radius
       @dx *= -1
     if @y < @radius
-      @dy *= -1
-      @y = @radius
+      reset()
     if @y > canvas.height - @radius
-      @dy *= -1
-      @y = canvas.height - @radius
+      reset()
 
     if @collidedWith(paddle1)
       @dy = Math.abs(@dy)
@@ -29,9 +27,9 @@ class Puck
 
   collidedWith: (paddle) ->
     if @x - @radius < paddle.x + paddle.width/2 && @x + @radius > paddle.x - paddle.width/2
-      if @y - @radius < paddle.y && @y > paddle.y
+      if @y - @radius < paddle.y + paddle.height/2 && @y > paddle.y
         return true
-      if @y + @radius > paddle.y && @y < paddle.y
+      if @y + @radius > paddle.y - paddle.height/2 && @y < paddle.y
         return true
     return false
 

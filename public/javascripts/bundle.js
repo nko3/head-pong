@@ -436,14 +436,81 @@ require.define("/canvas.js",function(require,module,exports,__dirname,__filename
 }());
 });
 
+require.define("/start.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  var drawBackground, mainLoop;
+
+  mainLoop = function() {
+    window.requestAnimationFrame(function() {
+      return mainLoop();
+    });
+    drawBackground();
+    paddle1.updateFromMouse();
+    paddle1.draw();
+    paddle2.updateFromComputer();
+    paddle2.draw();
+    puck.draw();
+    return puck.move();
+  };
+
+  drawBackground = function() {
+    var color;
+    color = 128;
+    ctx.fillStyle = "rgb(" + color + "," + color + "," + color + ")";
+    return ctx.fillRect(0, 0, canvas.width, canvas.height);
+  };
+
+  module.exports = mainLoop;
+
+}).call(this);
+
+});
+
 require.define("/init.js",function(require,module,exports,__dirname,__filename,process,global){(function(){
   Puck = require('./puck')
   Paddle = require('./paddle')
 
-  puck = new Puck(100, 100, 3, 3, 30)
-  paddle1 = new Paddle(50, 50, 30, 10, 'blue')
-  paddle2 = new Paddle(50, 550, 30, 10, 'red')
+  puck = new Puck(100, 100, 5, 5, 10)
+  paddle1 = new Paddle(50, 50, 50, 20, 'blue')
+  paddle2 = new Paddle(550, 550, 50, 20, 'red')
+
+  reset = function(){
+    puck = new Puck(100, 100, 5, 5, 10)
+  }
 }())
+
+});
+
+require.define("/paddle.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  var Paddle;
+
+  Paddle = (function() {
+
+    function Paddle(x, y, width, height, color) {
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+      this.color = color;
+    }
+
+    Paddle.prototype.updateFromMouse = function() {
+      return this.x = mousex || this.x;
+    };
+
+    Paddle.prototype.updateFromComputer = function() {};
+
+    Paddle.prototype.draw = function() {
+      ctx.fillStyle = this.color;
+      return ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+    };
+
+    return Paddle;
+
+  })();
+
+  module.exports = Paddle;
+
+}).call(this);
 
 });
 
@@ -473,12 +540,10 @@ require.define("/puck.coffee",function(require,module,exports,__dirname,__filena
         this.dx *= -1;
       }
       if (this.y < this.radius) {
-        this.dy *= -1;
-        this.y = this.radius;
+        reset();
       }
       if (this.y > canvas.height - this.radius) {
-        this.dy *= -1;
-        this.y = canvas.height - this.radius;
+        reset();
       }
       if (this.collidedWith(paddle1)) {
         this.dy = Math.abs(this.dy);
@@ -492,10 +557,10 @@ require.define("/puck.coffee",function(require,module,exports,__dirname,__filena
 
     Puck.prototype.collidedWith = function(paddle) {
       if (this.x - this.radius < paddle.x + paddle.width / 2 && this.x + this.radius > paddle.x - paddle.width / 2) {
-        if (this.y - this.radius < paddle.y && this.y > paddle.y) {
+        if (this.y - this.radius < paddle.y + paddle.height / 2 && this.y > paddle.y) {
           return true;
         }
-        if (this.y + this.radius > paddle.y && this.y < paddle.y) {
+        if (this.y + this.radius > paddle.y - paddle.height / 2 && this.y < paddle.y) {
           return true;
         }
       }
@@ -517,69 +582,6 @@ require.define("/puck.coffee",function(require,module,exports,__dirname,__filena
   })();
 
   module.exports = Puck;
-
-}).call(this);
-
-});
-
-require.define("/paddle.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var Paddle;
-
-  Paddle = (function() {
-
-    function Paddle(x, y, width, height, color) {
-      this.x = x;
-      this.y = y;
-      this.width = width;
-      this.height = height;
-      this.color = color;
-    }
-
-    Paddle.prototype.updateFromMouse = function() {
-      return this.x = mousex || this.x;
-    };
-
-    Paddle.prototype.updateFromComputer = function() {};
-
-    Paddle.prototype.draw = function() {
-      ctx.fillStyle = this.color;
-      return ctx.fillRect(this.x, this.y, this.width, this.height);
-    };
-
-    return Paddle;
-
-  })();
-
-  module.exports = Paddle;
-
-}).call(this);
-
-});
-
-require.define("/start.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var drawBackground, mainLoop;
-
-  mainLoop = function() {
-    window.requestAnimationFrame(function() {
-      return mainLoop();
-    });
-    drawBackground();
-    paddle1.updateFromMouse();
-    paddle1.draw();
-    paddle2.updateFromComputer();
-    paddle2.draw();
-    puck.draw();
-    return puck.move();
-  };
-
-  drawBackground = function() {
-    var color;
-    color = 128;
-    ctx.fillStyle = "rgb(" + color + "," + color + "," + color + ")";
-    return ctx.fillRect(0, 0, canvas.width, canvas.height);
-  };
-
-  module.exports = mainLoop;
 
 }).call(this);
 
