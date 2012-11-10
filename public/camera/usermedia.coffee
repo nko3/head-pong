@@ -1,3 +1,9 @@
+
+## Vars
+_video = _stream = null
+
+## Browser Compatibility
+
 URL = window.URL || window.webkitURL;
 
 getUserMedia = (options, success, error) ->
@@ -7,15 +13,29 @@ getUserMedia = (options, success, error) ->
 hasGetUserMedia = ->
   navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
 
-if hasGetUserMedia
-  getUserMedia { video: true },
+## init
+not_supported unless hasGetUserMedia
+
+## actions
+
+$("#camerabutton").on "click", ->
+  _stream = null
+  getUserMedia { video: true, audio: false },
     (x) -> got_camera(x),
     (e) -> fallback(e)
-else
-  not_supported
+
+$("#stopbutton").on "click", ->
+  _video.get(0).pause()
+  _stream.stop()
+
+## handlers
 
 got_camera = (stream) ->
-  $("#camvideo").attr "src", window.URL.createObjectURL(stream);
+  console.log "ye"
+  _video = $("#camvideo")
+  _stream = stream
+  console.log "umm"
+  _video.attr "src", window.URL.createObjectURL(_stream);
 
 fallback = (e) ->
   alert "err: #{e}"
