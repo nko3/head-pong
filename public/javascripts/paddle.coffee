@@ -4,9 +4,11 @@ class Paddle
   updateFromMouse: ->
     @x = mousex || @x
 
+  updateFromComputer: ->
+
   draw: ->
     ctx.fillStyle = @color
-    ctx.fillRect(@x - @width/2, @y - @width/2, @width, @height)
+    ctx.fillRect(@x, @y , @width, @height)
 
 
 module.exports = Paddle

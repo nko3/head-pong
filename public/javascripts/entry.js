@@ -3,6 +3,7 @@ window.onload = function(){
   require('./mouse')
   require('./animationFrame')
   require('./canvas')
-  init = require('./init')
-  init()
+  require('./init')
+  start = require('./start')
+  start()
 }

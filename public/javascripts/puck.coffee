@@ -19,14 +19,21 @@ class Puck
       @dy *= -1
       @y = canvas.height - @radius
 
-  collide: (paddle) ->
+    if @collidedWith(paddle1)
+      @dy = Math.abs(@dy)
+      @y = paddle1.y + paddle1.height/2 + @radius
+
+    if @collidedWith(paddle2)
+      @dy = Math.abs(@dy) * -1
+      @y = paddle2.y - paddle2.height/2 - @radius
+
+  collidedWith: (paddle) ->
     if @x - @radius < paddle.x + paddle.width/2 && @x + @radius > paddle.x - paddle.width/2
-      if @y - @radius < paddle.y + paddle.height/2 && @y > paddle.height/2
-        @dy *= -1
-        @y = paddle.y + @radius + paddle.height/2
-      if @y + @radius > paddle.y + paddle.height/2 && @y < paddle.height/2
-        @dy *= -1
-        @y = paddle.y - @radius - paddle.height/2
+      if @y - @radius < paddle.y && @y > paddle.y
+        return true
+      if @y + @radius > paddle.y && @y < paddle.y
+        return true
+    return false
 
   draw: (fillStyle = @color) ->
     ctx.fillStyle = fillStyle;
