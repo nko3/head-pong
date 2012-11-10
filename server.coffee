@@ -15,5 +15,8 @@ app.get "/", (req, res) ->
 app.get "/camera", (req, res) ->
     res.render "camera"
 
+app.get "/game", (req, res) ->
+    res.render "pong"
+
 app.listen(3000)
 console.log("Listening on port 3000")

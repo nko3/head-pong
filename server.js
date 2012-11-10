@@ -22,6 +22,10 @@
     return res.render("camera");
   });
 
+  app.get("/game", function(req, res) {
+    return res.render("pong");
+  });
+
   app.listen(3000);
 
   console.log("Listening on port 3000");
