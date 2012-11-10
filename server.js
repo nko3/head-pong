@@ -3,10 +3,21 @@ require('coffee-script');
 var express = require('express');
 var app = express();
 
+//app.use(express.staticProvider(__dirname + '/public'));
+
+app.configure(function(){
+  app.use(app.router);
+  app.use(express.bodyParser());
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'jade');
+});
+
+
 app.get('/', function(req, res){
-  res.send('Hello World');
+  res.render('index');
 });
 
 app.listen(3000);
 console.log('Listening on port 3000');
 
+//app.register('.html', require('jade'));
