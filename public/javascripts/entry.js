@@ -1,7 +1,8 @@
 window.onload = function(){
+  require('./animationFrame')
   canvas = document.getElementById("pong")
-  ctx = canvas.getContext("2d")
 
+  ctx = canvas.getContext("2d")
   init = require('./init')
-  init(ctx)
+  init(canvas, ctx)
 }
