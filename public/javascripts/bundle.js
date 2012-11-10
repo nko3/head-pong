@@ -391,27 +391,25 @@ process.binding = function (name) {
 
 });
 
-require.define("/canvas.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var canvas, ctx;
+require.define("/init.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  var Puck, startGame;
 
-  canvas = document.getElementById("pong");
+  Puck = require('./puck');
 
-  ctx = canvas.getContext("2d");
+  startGame = function(ctx) {
+    var puck;
+    puck = new Puck(100, 100, 0, 0, 30, 'black');
+    return puck.draw(ctx);
+  };
 
-  module.exports = [canvas, ctx];
+  module.exports = startGame;
 
 }).call(this);
 
 });
 
 require.define("/puck.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var Puck, canvas, canvas_stuff, ctx;
-
-  canvas_stuff = require('./canvas');
-
-  canvas = canvas_stuff.canvas;
-
-  ctx = canvas_stuff.ctx;
+  var Puck;
 
   Puck = (function() {
 
@@ -465,23 +463,6 @@ require.define("/puck.coffee",function(require,module,exports,__dirname,__filena
   })();
 
   module.exports = Puck;
-
-}).call(this);
-
-});
-
-require.define("/init.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var Puck, startGame;
-
-  Puck = require('./puck');
-
-  startGame = function(ctx) {
-    var puck;
-    puck = new Puck(100, 100, 0, 0, 30, 'black');
-    return puck.draw(ctx);
-  };
-
-  module.exports = startGame;
 
 }).call(this);
 
