@@ -1,13 +1,17 @@
 Puck = require('./puck')
+Paddle = require('./paddle')
 
 startGame = () ->
   puck = new Puck(100, 100, 3, 3, 30)
-  mainLoop(puck)
+  paddle = new Paddle(50, 50, 30, 10, 'blue')
+  mainLoop(puck, paddle)
 
-mainLoop = (puck) ->
+mainLoop = (puck, paddle) ->
   window.requestAnimationFrame ->
-    mainLoop(puck)
+    mainLoop(puck, paddle)
   drawBackground()
+  paddle.updateFromMouse()
+  paddle.draw()
   puck.draw()
   puck.move()
 
