@@ -1,13 +1,11 @@
-Puck = require('./puck')
-
-startGame = () ->
-  puck = new Puck(100, 100, 3, 3, 30)
-  mainLoop(puck)
-
-mainLoop = (puck) ->
+mainLoop = () ->
   window.requestAnimationFrame ->
-    mainLoop(puck)
+    mainLoop()
   drawBackground()
+  paddle1.updateFromMouse()
+  paddle1.draw()
+  paddle2.updateFromComputer()
+  paddle2.draw()
   puck.draw()
   puck.move()
 
@@ -16,4 +14,4 @@ drawBackground = ->
   ctx.fillStyle = "rgb(#{color},#{color},#{color})"
   ctx.fillRect(0,0,canvas.width,canvas.height)
 
-module.exports = startGame
+module.exports = mainLoop
