@@ -1,5 +1,9 @@
 {
   "name": "nko3-staunch-team",
+  "domains": [
+    "handofpong.com",
+    "www.handofpong.com"
+  ],
   "version": "0.0.0",
   "description": "Staunch Team",
   "main": "server.js",
