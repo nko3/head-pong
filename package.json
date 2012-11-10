@@ -14,7 +14,8 @@
     "express": "3.x",
     "node-live-reload": "0.0.3",
     "jade": "~0.27.7",
-    "coffee-script": "~1.4.0"
+    "coffee-script": "~1.4.0",
+    "browserify": "~1.16.3"
   },
   "devDependencies": {
     "node-dev": "~0.2.8"
