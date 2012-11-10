@@ -1,5 +1,9 @@
-class Puck ->
+# canvas = require('./canvas')
+
+
+class Puck
   constructor: (@x, @y, @dx, @dy, @radius, @color) ->
+
 
   move: ->
     @x += @dx
@@ -12,11 +16,11 @@ class Puck ->
 
     if this.x < @radius then this.x = @radius
     if this.x > canvas.width - @radius then this.x = canvas.width - @radius
-    if this.y < margin then this.y = margin
+    if this.y < @radius then this.y = @radius
     if this.y > canvas.height - @radius then this.y = canvas.height - @radius
 
   draw: (fillStyle = 'white', shadow = false) ->
       ctx.fillStyle = fillStyle;
       ctx.beginPath()
-      ctx.arc(@x, @y, @radius, 0, Math.PI * 2, false);
+      ctx.arc(@x, @y, @radius, 0, Math.PI * 2, false)
       ctx.fill()
