@@ -6,6 +6,10 @@
 
   URL = window.URL || window.webkitURL;
 
+  hasGetUserMedia = function() {
+    return navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+  };
+
   getUserMedia = function(options, success, error) {
     getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia || function(options, success, error) {
       return error();
@@ -13,11 +17,7 @@
     return getUserMedia.call(navigator, options, success, error);
   };
 
-  hasGetUserMedia = function() {
-    return navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-  };
-
-  if (!hasGetUserMedia) {
+  if (!hasGetUserMedia()) {
     not_supported;
 
   }
@@ -40,11 +40,9 @@
   });
 
   got_camera = function(stream) {
-    console.log("ye");
     _video = $("#camvideo");
-    _stream = stream;
-    console.log("umm");
-    return _video.attr("src", window.URL.createObjectURL(_stream));
+    _video.attr("src", URL.createObjectURL(stream));
+    return _stream = stream;
   };
 
   fallback = function(e) {
