@@ -1,7 +1,3 @@
-canvas_stuff = require('./canvas')
-canvas = canvas_stuff.canvas
-ctx = canvas_stuff.ctx
-
 class Puck
   constructor: (@x, @y, @dx, @dy, @radius, @color) ->
 
