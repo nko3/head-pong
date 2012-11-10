@@ -18,6 +18,9 @@ app.get "/", (req, res) ->
 app.get "/camera", (req, res) ->
     res.render "camera"
 
+app.get "/game", (req, res) ->
+    res.render "pong"
+
 server = http.createServer(app).listen app.get('port'), ->
   console.log("Express server listening on port " + app.get('port'))
 
@@ -36,3 +39,4 @@ io.sockets.on 'connection', (socket) ->
   socket.on 'mouse_pos', (x) ->
     console.log('received mouse position: ' + x)
     socket.emit('paddle_pos', x)
+

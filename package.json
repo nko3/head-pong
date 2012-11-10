@@ -4,7 +4,7 @@
     "handofpong.com",
     "www.handofpong.com"
   ],
-  "version": "0.0.0-3",
+  "version": "0.0.0-4",
   "description": "Staunch Team",
   "main": "server.js",
   "scripts": {

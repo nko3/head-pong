@@ -6,9 +6,22 @@ html(lang="en")
     h1 handofpong
     h2#message
     #container
-      video#camvideo(autoplay, width="200", height="200")
+      button#camerabutton Start camera
+      button#stopbutton Stop camera
+      hr
+      button#trackbutton Toogle tracking
+      #coordinates
       br
-      canvas#game(width="780", height="450", style="border:1px #000 dashed;")
+      video#camvideo(autoplay, width="500", height="500", controls)
+        Your browser do not support video, move on! user Chrome instead.
 
-    script(src='/javascripts/zepto.min.js')
+    #tracker(style="position:absolute; border-style:solid;")
+
+    script(src='/camera/objectdetect.js')
+    script(src='/classifier/objectdetect.frontalface.js')
+
+    script(src='/javascripts/jquery.js')
+    script(src='/camera/jquery.objectdetect.js')
+
     script(src='/camera/usermedia.js')
+    script(src='/camera/tracking.js')

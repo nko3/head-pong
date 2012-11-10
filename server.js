@@ -25,6 +25,10 @@
     return res.render("camera");
   });
 
+  app.get("/game", function(req, res) {
+    return res.render("pong");
+  });
+
   server = http.createServer(app).listen(app.get('port'), function() {
     return console.log("Express server listening on port " + app.get('port'));
   });
