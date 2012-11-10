@@ -14,6 +14,7 @@ mainLoop = (puck, paddle) ->
   paddle.draw()
   puck.draw()
   puck.move()
+  puck.collide(paddle)
 
 drawBackground = ->
   color = 128

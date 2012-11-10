@@ -1,5 +1,3 @@
-
-
 class Paddle
   constructor: (@x, @y, @width, @height, @color) ->
 
@@ -9,7 +7,6 @@ class Paddle
   draw: ->
     ctx.fillStyle = @color
     ctx.fillRect(@x - @width/2, @y - @width/2, @width, @height)
-
 
 
 module.exports = Paddle

@@ -6,15 +6,27 @@ class Puck
     @x += @dx
     @y += @dy
 
-    if this.x < @radius || this.x > canvas.width - @radius
-      this.dx *= -1
-    if this.y < @radius || this.y > canvas.height - @radius
-      this.dy *= -1
+    if @x < @radius
+      @x = @radius
+      @dx *= -1
+    if @x > canvas.width - @radius
+      @x = canvas.width - @radius
+      @dx *= -1
+    if @y < @radius
+      @dy *= -1
+      @y = @radius
+    if @y > canvas.height - @radius
+      @dy *= -1
+      @y = canvas.height - @radius
 
-    if this.x < @radius then this.x = @radius
-    if this.x > canvas.width - @radius then this.x = canvas.width - @radius
-    if this.y < @radius then this.y = @radius
-    if this.y > canvas.height - @radius then this.y = canvas.height - @radius
+  collide: (paddle) ->
+    if @x - @radius < paddle.x + paddle.width/2 && @x + @radius > paddle.x - paddle.width/2
+      if @y - @radius < paddle.y + paddle.height/2 && @y > paddle.height/2
+        @dy *= -1
+        @y = paddle.y + @radius + paddle.height/2
+      if @y + @radius > paddle.y + paddle.height/2 && @y < paddle.height/2
+        @dy *= -1
+        @y = paddle.y - @radius - paddle.height/2
 
   draw: (fillStyle = @color) ->
     ctx.fillStyle = fillStyle;
