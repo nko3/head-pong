@@ -1,9 +1,5 @@
 window.onload = function(){
-  var socket = io.connect();
-  socket.on('news', function (data) {
-    alert(data);
-    socket.emit('my other event', { my: 'data' });
-  });
+  require('./socket')
   require('./jquery')
   require('./mouse')
   require('./animationFrame')
