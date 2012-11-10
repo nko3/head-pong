@@ -1,3 +1,7 @@
 html
+  head
+    script(type='text/javascript', src='/javascripts/bundle.js')
+    link(rel='stylesheet', href='/stylesheets/canvas.css')
   body
-    h1= "yeyyy"
+    canvas(height=600, width=800, id='pong')
+    h1= "Hand of Pong"

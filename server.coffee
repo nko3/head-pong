@@ -4,7 +4,7 @@ app = express()
 app.configure ->
   app.use express.bodyParser()
   app.use app.router
-  app.use express.static "#{__dirname}/assets"
+  app.use express.static "#{__dirname}/public"
 
   app.set "views", "#{__dirname}/views"
   app.set "view engine", "jade"
