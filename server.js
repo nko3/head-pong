@@ -18,6 +18,10 @@
     return res.render("index");
   });
 
+  app.get("/camera", function(req, res) {
+    return res.render("camera");
+  });
+
   app.listen(3000);
 
   console.log("Listening on port 3000");
