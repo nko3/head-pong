@@ -6,18 +6,19 @@ html(lang="en")
     h1 handofpong
     h2#message
     #container
-      button#camerabutton Capture camera
+      button#camerabutton Start camera
       button#stopbutton Stop camera
       hr
-      button#trackbutton Hand tracking
+      button#trackbutton Toogle tracking
+      #coordinates
       br
-      video#camvideo(autoplay, width="400", height="400", controls)
+      video#camvideo(autoplay, width="500", height="500", controls)
         Your browser do not support video, move on! user Chrome instead.
 
+    #tracker(style="position:absolute; border-style:solid;")
+
     script(src='/camera/objectdetect.js')
-    script(src='/camera/objectdetect.eye.js')
-    script(src='/camera/objectdetect.frontalface.js')
-    script(src='/camera/objectdetect.mouth.js')
+    script(src='/classifier/objectdetect.frontalface.js')
 
     script(src='/javascripts/jquery.js')
     script(src='/camera/jquery.objectdetect.js')
