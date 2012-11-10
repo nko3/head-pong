@@ -25,7 +25,11 @@ io = require('socket.io').listen(server, app)
 
 io.sockets.on 'connection', (socket) ->
   console.log('you have connected')
-  socket.emit('news', {hello: 'world'})
   socket.on 'movement', (x) ->
+    socket.emit('news', 'hey')
     console.log(x)
+    socket.emit('news', 'bye')
+
+  socket.on 'paddle_hit', ->
+    console.log('ball hit by paddle')
 

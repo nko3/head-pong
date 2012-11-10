@@ -33,11 +33,13 @@
 
   io.sockets.on('connection', function(socket) {
     console.log('you have connected');
-    socket.emit('news', {
-      hello: 'world'
+    socket.on('movement', function(x) {
+      socket.emit('news', 'hey');
+      console.log(x);
+      return socket.emit('news', 'bye');
     });
-    return socket.on('movement', function(x) {
-      return console.log(x);
+    return socket.on('paddle_hit', function() {
+      return console.log('ball hit by paddle');
     });
   });
 
