@@ -461,69 +461,6 @@ require.define("/init.js",function(require,module,exports,__dirname,__filename,p
 
 });
 
-require.define("/paddle.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var Paddle;
-
-  Paddle = (function() {
-
-    function Paddle(x, y, width, height, color) {
-      this.x = x;
-      this.y = y;
-      this.width = width;
-      this.height = height;
-      this.color = color;
-    }
-
-    Paddle.prototype.updateFromMouse = function() {
-      return this.x = mousex || this.x;
-    };
-
-    Paddle.prototype.updateFromComputer = function() {};
-
-    Paddle.prototype.draw = function() {
-      ctx.fillStyle = this.color;
-      return ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
-    };
-
-    return Paddle;
-
-  })();
-
-  module.exports = Paddle;
-
-}).call(this);
-
-});
-
-require.define("/start.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var drawBackground, mainLoop;
-
-  mainLoop = function() {
-    window.requestAnimationFrame(function() {
-      return mainLoop();
-    });
-    drawBackground();
-    paddle1.updateFromMouse();
-    paddle1.draw();
-    paddle2.updateFromComputer();
-    paddle2.draw();
-    puck.draw();
-    return puck.move();
-  };
-
-  drawBackground = function() {
-    var color;
-    color = 128;
-    ctx.fillStyle = "rgb(" + color + "," + color + "," + color + ")";
-    return ctx.fillRect(0, 0, canvas.width, canvas.height);
-  };
-
-  module.exports = mainLoop;
-
-}).call(this);
-
-});
-
 require.define("/puck.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
   var Puck;
 
@@ -590,6 +527,71 @@ require.define("/puck.coffee",function(require,module,exports,__dirname,__filena
   })();
 
   module.exports = Puck;
+
+}).call(this);
+
+});
+
+require.define("/start.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  var drawBackground, mainLoop;
+
+  mainLoop = function() {
+    window.requestAnimationFrame(function() {
+      return mainLoop();
+    });
+    drawBackground();
+    paddle1.updateFromMouse();
+    paddle1.draw();
+    paddle2.draw();
+    puck.draw();
+    return puck.move();
+  };
+
+  drawBackground = function() {
+    var color;
+    color = 128;
+    ctx.fillStyle = "rgb(" + color + "," + color + "," + color + ")";
+    return ctx.fillRect(0, 0, canvas.width, canvas.height);
+  };
+
+  module.exports = mainLoop;
+
+}).call(this);
+
+});
+
+require.define("/paddle.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  var Paddle;
+
+  Paddle = (function() {
+
+    function Paddle(x, y, width, height, color) {
+      var _this = this;
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+      this.color = color;
+      socket.on('paddle_pos', function(x) {
+        return _this.x = x;
+      });
+    }
+
+    Paddle.prototype.updateFromMouse = function() {
+      this.x = mousex || this.x;
+      return socket.emit('mouse_pos', this.x);
+    };
+
+    Paddle.prototype.draw = function() {
+      ctx.fillStyle = this.color;
+      return ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+    };
+
+    return Paddle;
+
+  })();
+
+  module.exports = Paddle;
 
 }).call(this);
 

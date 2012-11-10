@@ -38,8 +38,12 @@
       console.log(x);
       return socket.emit('news', 'bye');
     });
-    return socket.on('paddle_hit', function() {
+    socket.on('paddle_hit', function() {
       return console.log('ball hit by paddle');
+    });
+    return socket.on('mouse_pos', function(x) {
+      console.log('received mouse position: ' + x);
+      return socket.emit('paddle_pos', x);
     });
   });
 

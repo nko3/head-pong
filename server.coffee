@@ -33,3 +33,6 @@ io.sockets.on 'connection', (socket) ->
   socket.on 'paddle_hit', ->
     console.log('ball hit by paddle')
 
+  socket.on 'mouse_pos', (x) ->
+    console.log('received mouse position: ' + x)
+    socket.emit('paddle_pos', x)
