@@ -417,42 +417,46 @@ require.define("/animationFrame.js",function(require,module,exports,__dirname,__
 }());
 });
 
+require.define("/canvas.js",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  canvas = document.getElementById("pong")
+  ctx = canvas.getContext("2d")
+}());
+});
+
 require.define("/puck.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
   var Puck;
 
   Puck = (function() {
 
-    function Puck(x, y, dx, dy, radius, canvas, ctx) {
+    function Puck(x, y, dx, dy, radius) {
       this.x = x;
       this.y = y;
       this.dx = dx;
       this.dy = dy;
       this.radius = radius;
-      this.canvas = canvas;
-      this.ctx = ctx;
       this.color = 'black';
     }
 
     Puck.prototype.move = function() {
       this.x += this.dx;
       this.y += this.dy;
-      if (this.x < this.radius || this.x > this.canvas.width - this.radius) {
+      if (this.x < this.radius || this.x > canvas.width - this.radius) {
         this.dx *= -1;
       }
-      if (this.y < this.radius || this.y > this.canvas.height - this.radius) {
+      if (this.y < this.radius || this.y > canvas.height - this.radius) {
         this.dy *= -1;
       }
       if (this.x < this.radius) {
         this.x = this.radius;
       }
-      if (this.x > this.canvas.width - this.radius) {
-        this.x = this.canvas.width - this.radius;
+      if (this.x > canvas.width - this.radius) {
+        this.x = canvas.width - this.radius;
       }
       if (this.y < this.radius) {
         this.y = this.radius;
       }
-      if (this.y > this.canvas.height - this.radius) {
-        return this.y = this.canvas.height - this.radius;
+      if (this.y > canvas.height - this.radius) {
+        return this.y = canvas.height - this.radius;
       }
     };
 
@@ -460,10 +464,10 @@ require.define("/puck.coffee",function(require,module,exports,__dirname,__filena
       if (fillStyle == null) {
         fillStyle = this.color;
       }
-      this.ctx.fillStyle = fillStyle;
-      this.ctx.beginPath();
-      this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      return this.ctx.fill();
+      ctx.fillStyle = fillStyle;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+      return ctx.fill();
     };
 
     return Puck;
@@ -477,13 +481,13 @@ require.define("/puck.coffee",function(require,module,exports,__dirname,__filena
 });
 
 require.define("/init.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var Puck, mainLoop, startGame;
+  var Puck, drawBackground, mainLoop, startGame;
 
   Puck = require('./puck');
 
-  startGame = function(canvas, ctx) {
+  startGame = function() {
     var puck;
-    puck = new Puck(100, 100, 3, 3, 30, canvas, ctx);
+    puck = new Puck(100, 100, 3, 3, 30);
     return mainLoop(puck);
   };
 
@@ -491,8 +495,16 @@ require.define("/init.coffee",function(require,module,exports,__dirname,__filena
     window.requestAnimationFrame(function() {
       return mainLoop(puck);
     });
+    drawBackground();
     puck.draw();
     return puck.move();
+  };
+
+  drawBackground = function() {
+    var color;
+    color = 128;
+    ctx.fillStyle = "rgb(" + color + "," + color + "," + color + ")";
+    return ctx.fillRect(0, 0, canvas.width, canvas.height);
   };
 
   module.exports = startGame;
@@ -503,11 +515,9 @@ require.define("/init.coffee",function(require,module,exports,__dirname,__filena
 
 require.define("/entry.js",function(require,module,exports,__dirname,__filename,process,global){window.onload = function(){
   require('./animationFrame')
-  canvas = document.getElementById("pong")
-
-  ctx = canvas.getContext("2d")
+  require('./canvas')
   init = require('./init')
-  init(canvas, ctx)
+  init()
 }
 });
 require("/entry.js");
