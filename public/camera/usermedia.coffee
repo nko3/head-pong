@@ -10,7 +10,7 @@ hasGetUserMedia = ->
 if hasGetUserMedia
   getUserMedia { video: true },
     (x) -> got_camera(x),
-    fallback
+    (e) -> fallback(e)
 else
   not_supported
 

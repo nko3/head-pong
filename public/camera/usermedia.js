@@ -20,7 +20,9 @@
       video: true
     }, function(x) {
       return got_camera(x);
-    }, fallback);
+    }, function(e) {
+      return fallback(e);
+    });
   } else {
     not_supported;
 
