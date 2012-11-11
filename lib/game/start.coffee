@@ -4,8 +4,8 @@ class Game
     Paddle = require('./paddle')
 
     @puck = new Puck(10, socket)
-    @paddle1 = new Paddle(50, 50, 50, 20, socket)
-    @paddle2 = new Paddle(550, 550, 50, 20, socket)
+    @paddle1 = new Paddle(50, 50, 150, 40, socket)
+    @paddle2 = new Paddle(550, 550, 150, 40, socket)
     @open = true
     @newSocket(socket)
 
