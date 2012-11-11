@@ -32,6 +32,8 @@ smoother = new Smoother(0.85, [0, 0, 0, 0, 0])
 $("#trackbutton").on "click", ->
   _stop = !_stop
   requestAnimationFrame(track)
+  if _stop
+    hide_tracker()
 
 track = ->
   requestAnimationFrame(track) unless _stop
@@ -47,15 +49,16 @@ track = ->
           top = ~~(coords[1] + coords[3] * 0.8/8 + $(video).offset().top)
           width = ~~(coords[2] * 6/8)
           height = ~~(coords[3] * 6/8)
-          $("#coordinates").html("(#{~~coords[0]}, #{~~coords[1]})")
+          $("#coordinates").html("(#{left}, #{top})")
           $("#tracker").css
             "left":    ($(video).width() - left - width) + "px",
             "top":     (top) + "px",
             "width":   width + "px",
             "height":  height + "px",
-            "display": "block"
+            "display": "none" #"block"
         else
-          $("#tracker").css
-            "display": "none"
+          hide_tracker()
 
-
+hide_tracker = ->
+  $("#tracker").css
+    "display": "none"
