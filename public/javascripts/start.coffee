@@ -1,3 +1,4 @@
+Explosion = require('./explosion')
 mainLoop = () ->
   window.requestAnimationFrame ->
     mainLoop()
@@ -7,14 +8,16 @@ mainLoop = () ->
   paddle1.draw()
   paddle2.draw()
   puck.draw()
-  console.log('explosions: ' + explosions)
   for explosion in explosions
     explosion.draw()
 
 animationLoop = () ->
-  setTimeout(animationLoop, 1000/15)
+  setTimeout(animationLoop, 1000/20)
   paddle1.updateFrame()
   paddle2.updateFrame()
+  for n in [1..4]
+    explosions.push(new Explosion(puck.x - 20 + Math.random()*40, puck.y - 20 + Math.random()*40))
+
   for explosion in explosions
     explosion.updateFrame()
   i = 0
