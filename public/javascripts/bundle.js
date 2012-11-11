@@ -700,10 +700,6 @@ require.define("/javascripts/start.coffee",function(require,module,exports,__dir
   animationLoop = function() {
     var explosion, i, n, _i, _j, _len, _results;
     setTimeout(animationLoop, 1000 / 20);
-    $('#pong').offset({
-      top: Math.random() * 5 - 2,
-      left: Math.random() * 5 - 2
-    });
     paddle1.updateFrame();
     paddle2.updateFrame();
     for (n = _i = 1; _i <= 4; n = ++_i) {
