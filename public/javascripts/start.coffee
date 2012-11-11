@@ -8,11 +8,16 @@ mainLoop = () ->
   paddle1.draw()
   paddle2.draw()
   puck.draw()
+  console.log('explosions: ' + explosions)
+  for explosion in explosions
+    explosion.draw()
 
 animationLoop = () ->
   setTimeout(animationLoop, 1000/30)
   paddle1.updateFrame()
   paddle2.updateFrame()
+  for explosion in explosions
+    explosion.updateFrame()
 
 drawBackground = ->
   color = 128
