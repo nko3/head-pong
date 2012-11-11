@@ -31,14 +31,13 @@ process = (stream) ->
   _stream = stream
 
 fallback = (e) ->
-  alert "err: #{e}"
-  show_msg "Not able to connect with your camera device, did you authorized us?"
+  show_msg "Not able to connect with your camera device, did you authorized us? #{e}"
 
 not_supported = ->
-  alert "We're using cool stuff, so you need to move to a decent browser, like Chrome."
+  show_msg "We're using cool stuff, so you need to move to a decent browser, like Chrome."
 
 show_msg = (message) ->
-  $("#message").html message
+  alert(message)
 
 ## init
 
