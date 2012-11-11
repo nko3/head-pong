@@ -30,13 +30,13 @@ smoother = new Smoother(0.85, [0, 0, 0, 0, 0])
 video = $("#camvideo")
 canvas = $("#pong")
 
+
 ## actions
 
 $("#trackbutton").on "click", ->
-  _stop = !_stop
-  requestAnimationFrame(track)
-  if _stop
-    hide_tracker()
+  init_tracking()
+
+## handlers
 
 track = ->
   requestAnimationFrame(track) unless _stop
@@ -72,3 +72,13 @@ send_coordinates = (x, y) ->
 hide_tracker = ->
   $("#tracker").css
     "display": "none"
+
+## init
+
+init_tracking = ->
+  _stop = !_stop
+  requestAnimationFrame(track)
+  if _stop
+    hide_tracker()
+
+init_tracking()
