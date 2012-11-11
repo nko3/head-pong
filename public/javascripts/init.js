@@ -12,8 +12,4 @@
   socket.on('paddle_2_pos', function(x){
     paddle2.x = x
   })
-
-  reset = function(){
-    puck = new Puck(100, 100, 5, 5, 10)
-  }
 }())
