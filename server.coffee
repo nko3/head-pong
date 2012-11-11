@@ -24,19 +24,22 @@ app.get "/game", (req, res) ->
 server = http.createServer(app).listen app.get('port'), ->
   console.log("Express server listening on port " + app.get('port'))
 
+Game = require('./lib/game/start')
 io = require('socket.io').listen(server, app)
+
+
+global.canvas_width = 800
+global.canvas_height = 600
 
 io.sockets.on 'connection', (socket) ->
   console.log('you have connected')
-  socket.on 'movement', (x) ->
-    socket.emit('news', 'hey')
-    console.log(x)
-    socket.emit('news', 'bye')
+
+
+  game = new Game(socket)
 
   socket.on 'paddle_hit', ->
     console.log('ball hit by paddle')
 
   socket.on 'mouse_pos', (x) ->
-    console.log('received mouse position: ' + x)
-    socket.emit('paddle_pos', x)
-
+    game.updatePaddle(1, x)
+    game.updatePaddle(2, x)
