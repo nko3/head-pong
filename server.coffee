@@ -32,7 +32,6 @@ global.canvas_width = 800
 global.canvas_height = 600
 
 games = []
-randomString = -> Math.random().toString(36).substring(7)
 
 io.sockets.on 'connection', (socket) ->
   console.log('you have connected')
@@ -46,5 +45,5 @@ io.sockets.on 'connection', (socket) ->
     else
       games.push(new Game(socket))
 
-  socket.on 'paddle_hit', ->
-    console.log('ball hit by paddle')
+  socket.on 'disconnect', ->
+    console.log(socket + ' has disconnected')
