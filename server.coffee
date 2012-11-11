@@ -44,6 +44,3 @@ io.sockets.on 'connection', (socket) ->
       openGames[0].join(socket)
     else
       games.push(new Game(socket))
-
-  socket.on 'disconnect', ->
-    console.log(socket + ' has disconnected')
