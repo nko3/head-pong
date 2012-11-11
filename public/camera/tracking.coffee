@@ -32,10 +32,13 @@ smoother = new Smoother(0.85, [0, 0, 0, 0, 0])
 $("#trackbutton").on "click", ->
   _stop = !_stop
   requestAnimationFrame(track)
+  if _stop
+    hide_tracker()
 
 track = ->
   requestAnimationFrame(track) unless _stop
   video = $("#camvideo")
+  canvas = $("#pong")
   if video.readyState == video.HAVE_ENOUGH_DATA
     $("#camvideo").objectdetect "all",
       {scaleMin: 3, scaleFactor: 1.1, classifier: objectdetect.frontalface},
@@ -47,15 +50,20 @@ track = ->
           top = ~~(coords[1] + coords[3] * 0.8/8 + $(video).offset().top)
           width = ~~(coords[2] * 6/8)
           height = ~~(coords[3] * 6/8)
-          $("#coordinates").html("(#{~~coords[0]}, #{~~coords[1]})")
+          send_coordinates($(canvas).width() - (left - $(canvas).width()), top)
           $("#tracker").css
             "left":    ($(video).width() - left - width) + "px",
             "top":     (top) + "px",
             "width":   width + "px",
             "height":  height + "px",
-            "display": "block"
+            "display": "none" #"block"
         else
-          $("#tracker").css
-            "display": "none"
+          hide_tracker()
 
+send_coordinates = (x, y) ->
+  socket.emit('mouse_pos', x)
+  $("#coordinates").html("(#{x}, #{y})")
 
+hide_tracker = ->
+  $("#tracker").css
+    "display": "none"

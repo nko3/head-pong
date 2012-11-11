@@ -1,0 +1,37 @@
+doctype 5
+html(lang="en")
+  head
+    title= "handofpong"
+    link(rel='stylesheet', href='/stylesheets/canvas.css')
+    link(rel='stylesheet', href='/stylesheets/video.css')
+  body
+    h1= "Hand of Pong"
+    h2#message
+
+    canvas#pong(width=800, height=600, style="float:left; margin-right:1em;")
+
+    video#camvideo(autoplay, style="float:left; margin-right:1em;", class="flip-horizontal", width=260, height=195)
+      Your browser do not support video, move on! user Chrome instead.
+    #coordinates (,)
+    hr
+    button#camerabutton Start camera
+    br
+    button#stopbutton Stop camera
+    br
+    button#trackbutton Toogle tracking
+
+    #tracker(style="position:absolute; border-style:dashed; display:none;")
+
+    script(src='/socket.io/socket.io.js')
+    script(src='/javascripts/bundle.js')
+
+
+    script(src='/camera/smoother.js')
+    script(src='/camera/objectdetect.js')
+    script(src='/classifier/objectdetect.frontalface.js')
+
+    script(src='/javascripts/jquery.js')
+    script(src='/camera/jquery.objectdetect.js')
+
+    script(src='/camera/usermedia.js')
+    script(src='/camera/tracking.js')
