@@ -8,15 +8,14 @@ html(lang="en")
     #container
       button#camerabutton Start camera
       button#stopbutton Stop camera
-      hr
       button#trackbutton Toogle tracking
       #coordinates
-      br
-      video#camvideo(autoplay, width="500", height="500", controls)
+      video#camvideo(autoplay, style="float:left; margin-right:1em;", controls)
         Your browser do not support video, move on! user Chrome instead.
 
-    #tracker(style="position:absolute; border-style:solid;")
+    #tracker(style="position:absolute; border-style:dashed;")
 
+    script(src='/camera/smoother.js')
     script(src='/camera/objectdetect.js')
     script(src='/classifier/objectdetect.frontalface.js')
 
