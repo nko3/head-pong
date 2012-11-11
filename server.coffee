@@ -26,7 +26,7 @@ server = http.createServer(app).listen app.get('port'), ->
 
 Game = require('./lib/game/start')
 io = require('socket.io').listen(server, app)
-
+io.set('log level', 1)
 
 global.canvas_width = 800
 global.canvas_height = 600
