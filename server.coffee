@@ -34,13 +34,12 @@ global.canvas_height = 600
 io.sockets.on 'connection', (socket) ->
   console.log('you have connected')
 
+
+  game = new Game(socket)
+
   socket.on 'paddle_hit', ->
     console.log('ball hit by paddle')
 
   socket.on 'mouse_pos', (x) ->
-    socket.emit('paddle_1_pos', x)
-    setTimeout ->
-      socket.emit('paddle_2_pos', x)
-    , 1000
-
-  game = new Game(socket)
+    game.updatePaddle(1, x)
+    game.updatePaddle(2, x)

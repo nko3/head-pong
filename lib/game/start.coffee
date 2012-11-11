@@ -15,5 +15,14 @@ class Game
       @mainLoop()
     , 1000/60
 
+  updatePaddle: (number, x) ->
+    console.log(number, x)
+    if number == 1
+      @paddle1.x = x
+      @socket.emit('paddle_1_pos', x)
+    else
+      @paddle2.x = x
+      @socket.emit('paddle_2_pos', x)
+
 
 module.exports = Game

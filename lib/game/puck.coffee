@@ -35,10 +35,12 @@ class Puck
     return false
 
   reset: ->
-    console.log('hello from the reset')
     @x = global.canvas_width/2
     @y = global.canvas_height/2
     @dx = Math.random()*10 - 5
     @dy = Math.random()*10 - 5
+    #make sure it's not super slow
+    if Math.abs(@dy) < 0.5 then @dy *= 10
+    if Math.abs(@dy) < 2.5 then @dy *= 2
 
 module.exports = Puck

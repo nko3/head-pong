@@ -44,16 +44,14 @@
   io.sockets.on('connection', function(socket) {
     var game;
     console.log('you have connected');
+    game = new Game(socket);
     socket.on('paddle_hit', function() {
       return console.log('ball hit by paddle');
     });
-    socket.on('mouse_pos', function(x) {
-      socket.emit('paddle_1_pos', x);
-      return setTimeout(function() {
-        return socket.emit('paddle_2_pos', x);
-      }, 1000);
+    return socket.on('mouse_pos', function(x) {
+      game.updatePaddle(1, x);
+      return game.updatePaddle(2, x);
     });
-    return game = new Game(socket);
   });
 
 }).call(this);
