@@ -111,9 +111,10 @@ section{
 #message{
 	background-color: #333;
 	margin: 0 auto;
-	width: 130px;
-	height: 100px;
+	width: 150px;
+	/*height: 200px;*/
 	color: white;
+	font-size: 0.8em;
 	font-family: 'Press Start 2P', cursive;
 	padding: 10px;
 	margin-top: 20px;
