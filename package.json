@@ -4,11 +4,11 @@
     "handofpong.com",
     "www.handofpong.com"
   ],
-  "version": "0.0.0-4",
+  "version": "0.0.0-6",
   "description": "Staunch Team",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "coffee server.coffee"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,9 @@
     "express": "3.x",
     "jade": "~0.27.7",
     "coffee-script": "~1.4.0",
-    "browserify": "~1.16.3"
+    "browserify": "~1.16.3",
+    "socket.io": "~0.9.11",
+    "request": "~2.12.0"
   },
   "devDependencies": {
     "node-dev": "~0.2.8"

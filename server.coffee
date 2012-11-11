@@ -1,7 +1,9 @@
 express = require("express")
 app = express()
+http = require('http')
 
 app.configure ->
+  app.set('port', process.env.PORT || 3000);
   app.use express.bodyParser()
   app.use app.router
   app.use express.static "#{__dirname}/public"
@@ -12,11 +14,32 @@ app.configure ->
 app.get "/", (req, res) ->
     res.render "index"
 
+
 app.get "/camera", (req, res) ->
     res.render "camera"
 
 app.get "/game", (req, res) ->
     res.render "pong"
 
-app.listen(3000)
-console.log("Listening on port 3000")
+server = http.createServer(app).listen app.get('port'), ->
+  console.log("Express server listening on port " + app.get('port'))
+
+Game = require('./lib/game/start')
+io = require('socket.io').listen(server, app)
+
+
+global.canvas_width = 800
+global.canvas_height = 600
+
+io.sockets.on 'connection', (socket) ->
+  console.log('you have connected')
+
+
+  game = new Game(socket)
+
+  socket.on 'paddle_hit', ->
+    console.log('ball hit by paddle')
+
+  socket.on 'mouse_pos', (x) ->
+    game.updatePaddle(1, x)
+    game.updatePaddle(2, x)
