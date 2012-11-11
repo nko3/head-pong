@@ -14,14 +14,17 @@ app.configure ->
 app.get "/", (req, res) ->
     res.render "index"
 
+app.get "/game", (req, res) ->
+  res.render "game"
+
+app.get "/about", (req, res) ->
+  res.render "about"
+
 app.get "/camera", (req, res) ->
     res.render "camera"
 
 app.get "/pong", (req, res) ->
     res.render "pong"
-
-app.get "/game", (req, res) ->
-  res.render "game"
 
 server = http.createServer(app).listen app.get('port'), ->
   console.log("Express server listening on port " + app.get('port'))
