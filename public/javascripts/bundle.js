@@ -500,38 +500,6 @@ require.define("/init.js",function(require,module,exports,__dirname,__filename,p
 
 });
 
-require.define("/puck.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var Puck;
-
-  Puck = (function() {
-
-    function Puck(x, y, radius) {
-      this.x = x;
-      this.y = y;
-      this.radius = radius;
-      this.color = 'black';
-    }
-
-    Puck.prototype.draw = function(fillStyle) {
-      if (fillStyle == null) {
-        fillStyle = this.color;
-      }
-      ctx.fillStyle = fillStyle;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      return ctx.fill();
-    };
-
-    return Puck;
-
-  })();
-
-  module.exports = Puck;
-
-}).call(this);
-
-});
-
 require.define("/start.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
   var drawBackground, mainLoop;
 
@@ -553,6 +521,43 @@ require.define("/start.coffee",function(require,module,exports,__dirname,__filen
   };
 
   module.exports = mainLoop;
+
+}).call(this);
+
+});
+
+require.define("/puck.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  var Puck;
+
+  Puck = (function() {
+
+    function Puck(x, y, radius) {
+      var _this = this;
+      this.x = x;
+      this.y = y;
+      this.radius = radius;
+      this.color = 'black';
+      socket.on('puck_pos', function(x, y) {
+        _this.x = x;
+        return _this.y = y;
+      });
+    }
+
+    Puck.prototype.draw = function(fillStyle) {
+      if (fillStyle == null) {
+        fillStyle = this.color;
+      }
+      ctx.fillStyle = fillStyle;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+      return ctx.fill();
+    };
+
+    return Puck;
+
+  })();
+
+  module.exports = Puck;
 
 }).call(this);
 

@@ -13,7 +13,7 @@ class Game
     @socket.emit('puck_pos', @puck.x, @puck.y)
     setTimeout =>
       @mainLoop()
-    , 60
+    , 1000/60
 
 
 module.exports = Game
