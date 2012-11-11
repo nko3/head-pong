@@ -4,11 +4,11 @@
     "handofpong.com",
     "www.handofpong.com"
   ],
-  "version": "0.0.0-5",
+  "version": "0.0.0-6",
   "description": "Staunch Team",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "coffee server.coffee"
   },
   "repository": {
     "type": "git",
