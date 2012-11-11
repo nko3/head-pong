@@ -1,9 +1,6 @@
 mainLoop = () ->
   window.requestAnimationFrame ->
     mainLoop()
-  paddle1.updateFromMouse()
-  puck.move()
-
 
   drawBackground()
   paddle1.draw()
