@@ -7,7 +7,7 @@ mainLoop = () ->
   drawBackground()
   paddle1.draw()
   paddle2.draw()
-  puck.draw()
+  # puck.draw()
   for explosion in explosions
     explosion.draw()
 

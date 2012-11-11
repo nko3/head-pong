@@ -21,10 +21,14 @@ class Puck
 
     if @collidedWith(paddle1)
       @dy = Math.abs(@dy)
+      @dy += 0.1
+      @dx += (Math.random()*10 - 5)
       @y = paddle1.y + paddle1.height/2 + @radius
 
     if @collidedWith(paddle2)
       @dy = Math.abs(@dy) * -1
+      @dy -= 0.1
+      @dx += (Math.random()*10 - 5)
       @y = paddle2.y - paddle2.height/2 - @radius
 
   collidedWith: (paddle) ->
