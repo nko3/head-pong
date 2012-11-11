@@ -30,7 +30,6 @@ class Puck
   collidedWith: (paddle) ->
     if @x - @radius < paddle.x + paddle.width/2 && @x + @radius > paddle.x - paddle.width/2
       if (@y - @radius < paddle.y + paddle.height/2 && @y > paddle.y) || (@y + @radius > paddle.y - paddle.height/2 && @y < paddle.y)
-        @socket.emit('paddle_hit')
         return true
     return false
 
