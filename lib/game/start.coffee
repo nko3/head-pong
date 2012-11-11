@@ -38,22 +38,24 @@ class Game
       socket.on 'mouse_pos', (x) =>
         @updatePaddle(2, x)
       socket.on 'disconnect', (x) =>
-        if @p1socket
+        if @p1socket and @p1socket != null
           @p2socket = null
           @open = true
           console.log('p2 has shut down, leaving player 1')
         else
+          @open = false
           console.log('p2 has shut down, leaving the game empty')
       @p2socket = socket
     else
       socket.on 'mouse_pos', (x) =>
         @updatePaddle(1, x)
       socket.on 'disconnect', (x) =>
-        if @p2socket
+        if @p2socket and @p2socket != null
           @p1socket = null
           @open = true
           console.log('p1 has shut down, leaving player 2')
         else
+          @open = false
           console.log('p1 has shut down, leaving the game empty')
       @p1socket = socket
 
