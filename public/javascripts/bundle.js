@@ -545,6 +545,31 @@ require.define("/javascripts/canvas.js",function(require,module,exports,__dirnam
 }());
 });
 
+require.define("/javascripts/init.js",function(require,module,exports,__dirname,__filename,process,global){(function(){
+  Puck = require('./puck')
+  Paddle = require('./paddle')
+
+  puck = new Puck(100, 100, 10)
+  paddle1 = new Paddle(50, 50, 150, 40, 'img/redp.png')
+  paddle2 = new Paddle(550, 550, 150, 40, 'img/bluep.png')
+  explosions = []
+
+  socket.on('paddle_1_pos', function(x){
+    paddle1.x = x
+  })
+  socket.on('paddle_2_pos', function(x){
+    paddle2.x = x
+  })
+  socket.on('other_connect', function(){
+    $('#message').html("The being that you are playing against passes the turing test")
+  })
+  socket.on('other_disconnect', function(){
+    $('#message').html("Please enjoy battling your robot overlords while we search for another player")
+  })
+}())
+
+});
+
 require.define("/javascripts/puck.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
   var Puck;
 
@@ -561,16 +586,6 @@ require.define("/javascripts/puck.coffee",function(require,module,exports,__dirn
         return _this.y = y;
       });
     }
-
-    Puck.prototype.draw = function(fillStyle) {
-      if (fillStyle == null) {
-        fillStyle = this.color;
-      }
-      ctx.fillStyle = fillStyle;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      return ctx.fill();
-    };
 
     return Puck;
 
@@ -618,67 +633,6 @@ require.define("/javascripts/paddle.coffee",function(require,module,exports,__di
   module.exports = Paddle;
 
 }).call(this);
-
-});
-
-require.define("/javascripts/explosion.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var Explosion;
-
-  Explosion = (function() {
-
-    function Explosion(x, y, width, height) {
-      this.x = x;
-      this.y = y;
-      this.width = width != null ? width : 63;
-      this.height = height != null ? height : 56;
-      this.sprites = new Image();
-      this.sprites.src = 'img/explosion.png';
-      this.currentFrame = 0;
-      this.totalFrames = 16;
-      this.frameWidth = 63;
-      this.frameHeight = 56;
-    }
-
-    Explosion.prototype.updateFrame = function() {
-      return this.currentFrame += 1;
-    };
-
-    Explosion.prototype.draw = function() {
-      return ctx.drawImage(this.sprites, this.currentFrame * this.frameHeight, 0, this.frameWidth, this.frameHeight, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
-    };
-
-    return Explosion;
-
-  })();
-
-  module.exports = Explosion;
-
-}).call(this);
-
-});
-
-require.define("/javascripts/init.js",function(require,module,exports,__dirname,__filename,process,global){(function(){
-  Puck = require('./puck')
-  Paddle = require('./paddle')
-
-  puck = new Puck(100, 100, 10)
-  paddle1 = new Paddle(50, 50, 150, 40, 'img/redp.png')
-  paddle2 = new Paddle(550, 550, 150, 40, 'img/bluep.png')
-  explosions = []
-
-  socket.on('paddle_1_pos', function(x){
-    paddle1.x = x
-  })
-  socket.on('paddle_2_pos', function(x){
-    paddle2.x = x
-  })
-  socket.on('other_connect', function(){
-    $('#message').html("The being that you are playing against passes the turing test")
-  })
-  socket.on('other_disconnect', function(){
-    $('#message').html("Please enjoy battling your robot overlords while we search for another player")
-  })
-}())
 
 });
 
@@ -745,6 +699,42 @@ require.define("/javascripts/start.coffee",function(require,module,exports,__dir
   };
 
   module.exports = start;
+
+}).call(this);
+
+});
+
+require.define("/javascripts/explosion.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  var Explosion;
+
+  Explosion = (function() {
+
+    function Explosion(x, y, width, height) {
+      this.x = x;
+      this.y = y;
+      this.width = width != null ? width : 63;
+      this.height = height != null ? height : 56;
+      this.sprites = new Image();
+      this.sprites.src = 'img/explosion.png';
+      this.currentFrame = 0;
+      this.totalFrames = 16;
+      this.frameWidth = 63;
+      this.frameHeight = 56;
+    }
+
+    Explosion.prototype.updateFrame = function() {
+      return this.currentFrame += 1;
+    };
+
+    Explosion.prototype.draw = function() {
+      return ctx.drawImage(this.sprites, this.currentFrame * this.frameHeight, 0, this.frameWidth, this.frameHeight, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+    };
+
+    return Explosion;
+
+  })();
+
+  module.exports = Explosion;
 
 }).call(this);
 
