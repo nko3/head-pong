@@ -564,37 +564,38 @@ require.define("/javascripts/init.js",function(require,module,exports,__dirname,
 
 });
 
-require.define("/javascripts/explosion.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var Explosion;
+require.define("/javascripts/puck.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  var Puck;
 
-  Explosion = (function() {
+  Puck = (function() {
 
-    function Explosion(x, y, width, height) {
+    function Puck(x, y, radius) {
+      var _this = this;
       this.x = x;
       this.y = y;
-      this.width = width != null ? width : 63;
-      this.height = height != null ? height : 56;
-      this.sprites = new Image();
-      this.sprites.src = 'img/explosion.png';
-      this.currentFrame = 0;
-      this.totalFrames = 16;
-      this.frameWidth = 63;
-      this.frameHeight = 56;
+      this.radius = radius;
+      this.color = 'black';
+      socket.on('puck_pos', function(x, y) {
+        _this.x = x;
+        return _this.y = y;
+      });
     }
 
-    Explosion.prototype.updateFrame = function() {
-      return this.currentFrame += 1;
+    Puck.prototype.draw = function(fillStyle) {
+      if (fillStyle == null) {
+        fillStyle = this.color;
+      }
+      ctx.fillStyle = fillStyle;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+      return ctx.fill();
     };
 
-    Explosion.prototype.draw = function() {
-      return ctx.drawImage(this.sprites, this.currentFrame * this.frameHeight, 0, this.frameWidth, this.frameHeight, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
-    };
-
-    return Explosion;
+    return Puck;
 
   })();
 
-  module.exports = Explosion;
+  module.exports = Puck;
 
 }).call(this);
 
@@ -639,38 +640,37 @@ require.define("/javascripts/paddle.coffee",function(require,module,exports,__di
 
 });
 
-require.define("/javascripts/puck.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var Puck;
+require.define("/javascripts/explosion.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  var Explosion;
 
-  Puck = (function() {
+  Explosion = (function() {
 
-    function Puck(x, y, radius) {
-      var _this = this;
+    function Explosion(x, y, width, height) {
       this.x = x;
       this.y = y;
-      this.radius = radius;
-      this.color = 'black';
-      socket.on('puck_pos', function(x, y) {
-        _this.x = x;
-        return _this.y = y;
-      });
+      this.width = width != null ? width : 63;
+      this.height = height != null ? height : 56;
+      this.sprites = new Image();
+      this.sprites.src = 'img/explosion.png';
+      this.currentFrame = 0;
+      this.totalFrames = 16;
+      this.frameWidth = 63;
+      this.frameHeight = 56;
     }
 
-    Puck.prototype.draw = function(fillStyle) {
-      if (fillStyle == null) {
-        fillStyle = this.color;
-      }
-      ctx.fillStyle = fillStyle;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      return ctx.fill();
+    Explosion.prototype.updateFrame = function() {
+      return this.currentFrame += 1;
     };
 
-    return Puck;
+    Explosion.prototype.draw = function() {
+      return ctx.drawImage(this.sprites, this.currentFrame * this.frameHeight, 0, this.frameWidth, this.frameHeight, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+    };
+
+    return Explosion;
 
   })();
 
-  module.exports = Puck;
+  module.exports = Explosion;
 
 }).call(this);
 
@@ -689,7 +689,6 @@ require.define("/javascripts/start.coffee",function(require,module,exports,__dir
     drawBackground();
     paddle1.draw();
     paddle2.draw();
-    puck.draw();
     _results = [];
     for (_i = 0, _len = explosions.length; _i < _len; _i++) {
       explosion = explosions[_i];
@@ -701,6 +700,10 @@ require.define("/javascripts/start.coffee",function(require,module,exports,__dir
   animationLoop = function() {
     var explosion, i, n, _i, _j, _len, _results;
     setTimeout(animationLoop, 1000 / 20);
+    $('#pong').offset({
+      top: Math.random() * 5 - 2,
+      left: Math.random() * 5 - 2
+    });
     paddle1.updateFrame();
     paddle2.updateFrame();
     for (n = _i = 1; _i <= 4; n = ++_i) {

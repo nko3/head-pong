@@ -7,12 +7,13 @@ mainLoop = () ->
   drawBackground()
   paddle1.draw()
   paddle2.draw()
-  puck.draw()
+  # puck.draw()
   for explosion in explosions
     explosion.draw()
 
 animationLoop = () ->
   setTimeout(animationLoop, 1000/20)
+  $('#pong').offset({top: Math.random()*5 - 2, left: Math.random()*5 - 2})
   paddle1.updateFrame()
   paddle2.updateFrame()
   for n in [1..4]
