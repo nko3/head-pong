@@ -37,29 +37,34 @@ class Game
     if @p1socket
       socket.on 'mouse_pos', (x) =>
         @updatePaddle(2, x)
-        console.log "1.mouse_pow: #{x}"
       socket.on 'disconnect', (x) =>
         if @p1socket and @p1socket != null
           @p2socket = null
           @open = true
           console.log('p2 has shut down, leaving player 1')
+          @p1socket.emit('other_disconnect')
         else
           @open = false
           console.log('p2 has shut down, leaving the game empty')
       @p2socket = socket
+      if @p1socket
+        @p2socket.emit('other_connect')
+        @p1socket.emit('other_connect')
     else
       socket.on 'mouse_pos', (x) =>
         @updatePaddle(1, x)
-        console.log "1.mouse_pow: #{x}"
       socket.on 'disconnect', (x) =>
         if @p2socket and @p2socket != null
           @p1socket = null
           @open = true
+          @p2socket.emit('other_disconnect')
           console.log('p1 has shut down, leaving player 2')
         else
           @open = false
           console.log('p1 has shut down, leaving the game empty')
       @p1socket = socket
-
+      if @p2socket
+        @p2socket.emit('other_connect')
+        @p1socket.emit('other_connect')
 
 module.exports = Game

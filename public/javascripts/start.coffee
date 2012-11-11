@@ -13,7 +13,6 @@ mainLoop = () ->
 
 animationLoop = () ->
   setTimeout(animationLoop, 1000/20)
-  #$('#pong').offset({top: Math.random()*5 - 2, left: Math.random()*5 - 2})
   paddle1.updateFrame()
   paddle2.updateFrame()
   for n in [1..4]
@@ -40,4 +39,5 @@ updateFromMouse = ->
 start = ->
   mainLoop()
   animationLoop()
+
 module.exports = start

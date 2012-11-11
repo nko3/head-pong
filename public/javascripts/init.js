@@ -13,4 +13,10 @@
   socket.on('paddle_2_pos', function(x){
     paddle2.x = x
   })
+  socket.on('other_connect', function(){
+    $('#message').html("The being that you are playing against passes the turing test")
+  })
+  socket.on('other_disconnect', function(){
+    $('#message').html("Please enjoy battling your robot overlords while we search for another player")
+  })
 }())
