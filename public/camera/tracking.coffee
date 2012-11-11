@@ -54,7 +54,7 @@ track = ->
 
           canvas_width = $(canvas).width() + $(canvas).offset().left
           send_coordinates(canvas_width - 340 - 1.7*(left - $(video).offset().left), top)
-          console.log "left: #{left}, canvas: #{canvas_width}, offset: #{$(video).offset().left}"
+          #console.log "left: #{left}, canvas: #{canvas_width}, offset: #{$(video).offset().left}"
 
           $("#tracker").css
             "left":    ($(video).width() - left - width) + "px",
