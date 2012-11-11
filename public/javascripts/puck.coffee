@@ -1,3 +1,4 @@
+
 class Puck
   constructor: (@x, @y, @radius) ->
     @color = 'black'
