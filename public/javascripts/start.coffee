@@ -1,8 +1,7 @@
 mainLoop = () ->
   window.requestAnimationFrame ->
     mainLoop()
-  updateFromMouse()
-
+  #updateFromMouse() #handled in tracking
 
   drawBackground()
   paddle1.draw()
