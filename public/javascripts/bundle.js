@@ -646,7 +646,6 @@ require.define("/javascripts/start.coffee",function(require,module,exports,__dir
     window.requestAnimationFrame(function() {
       return mainLoop();
     });
-    updateFromMouse();
     drawBackground();
     paddle1.draw();
     paddle2.draw();

@@ -37,6 +37,7 @@ class Game
     if @p1socket
       socket.on 'mouse_pos', (x) =>
         @updatePaddle(2, x)
+        console.log "1.mouse_pow: #{x}"
       socket.on 'disconnect', (x) =>
         if @p1socket and @p1socket != null
           @p2socket = null
@@ -49,6 +50,7 @@ class Game
     else
       socket.on 'mouse_pos', (x) =>
         @updatePaddle(1, x)
+        console.log "1.mouse_pow: #{x}"
       socket.on 'disconnect', (x) =>
         if @p2socket and @p2socket != null
           @p1socket = null

@@ -8,14 +8,16 @@ html(lang="en")
     h1= "Hand of Pong"
     h2#message
 
-    canvas#pong(width=600, height=400, style="float:left; margin-right:1em;")
+    canvas#pong(width=800, height=600, style="float:left; margin-right:1em;")
 
     video#camvideo(autoplay, style="float:left; margin-right:1em;", class="flip-horizontal", width=260, height=195)
       Your browser do not support video, move on! user Chrome instead.
     #coordinates (,)
     hr
     button#camerabutton Start camera
+    br
     button#stopbutton Stop camera
+    br
     button#trackbutton Toogle tracking
 
     #tracker(style="position:absolute; border-style:dashed; display:none;")
