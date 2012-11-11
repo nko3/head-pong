@@ -552,6 +552,7 @@ require.define("/javascripts/init.js",function(require,module,exports,__dirname,
   puck = new Puck(100, 100, 10)
   paddle1 = new Paddle(50, 50, 150, 40, 'img/redp.png')
   paddle2 = new Paddle(550, 550, 150, 40, 'img/bluep.png')
+  explosions = []
 
   socket.on('paddle_1_pos', function(x){
     paddle1.x = x
@@ -639,23 +640,90 @@ require.define("/javascripts/paddle.coffee",function(require,module,exports,__di
 
 });
 
+require.define("/javascripts/explosion.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  var Explosion;
+
+  Explosion = (function() {
+
+    function Explosion(x, y, width, height) {
+      this.x = x;
+      this.y = y;
+      this.width = width != null ? width : 63;
+      this.height = height != null ? height : 56;
+      this.sprites = new Image();
+      this.sprites.src = 'img/explosion.png';
+      this.currentFrame = 0;
+      this.totalFrames = 16;
+      this.frameWidth = 63;
+      this.frameHeight = 56;
+    }
+
+    Explosion.prototype.updateFrame = function() {
+      return this.currentFrame += 1;
+    };
+
+    Explosion.prototype.draw = function() {
+      return ctx.drawImage(this.sprites, this.currentFrame * this.frameHeight, 0, this.frameWidth, this.frameHeight, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+    };
+
+    return Explosion;
+
+  })();
+
+  module.exports = Explosion;
+
+}).call(this);
+
+});
+
 require.define("/javascripts/start.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var animationLoop, drawBackground, mainLoop, start, updateFromMouse;
+  var Explosion, animationLoop, drawBackground, mainLoop, start, updateFromMouse;
+
+  Explosion = require('./explosion');
 
   mainLoop = function() {
+    var explosion, _i, _len, _results;
     window.requestAnimationFrame(function() {
       return mainLoop();
     });
     drawBackground();
     paddle1.draw();
     paddle2.draw();
-    return puck.draw();
+    _results = [];
+    for (_i = 0, _len = explosions.length; _i < _len; _i++) {
+      explosion = explosions[_i];
+      _results.push(explosion.draw());
+    }
+    return _results;
   };
 
   animationLoop = function() {
-    setTimeout(animationLoop, 1000 / 30);
+    var explosion, i, n, _i, _j, _len, _results;
+    setTimeout(animationLoop, 1000 / 20);
+    $('#pong').offset({
+      top: Math.random() * 5 - 2,
+      left: Math.random() * 5 - 2
+    });
     paddle1.updateFrame();
-    return paddle2.updateFrame();
+    paddle2.updateFrame();
+    for (n = _i = 1; _i <= 4; n = ++_i) {
+      explosions.push(new Explosion(puck.x - 20 + Math.random() * 40, puck.y - 20 + Math.random() * 40));
+    }
+    for (_j = 0, _len = explosions.length; _j < _len; _j++) {
+      explosion = explosions[_j];
+      explosion.updateFrame();
+    }
+    i = 0;
+    _results = [];
+    while (i < explosions.length) {
+      explosion = explosions[i];
+      if (explosion.currentFrame < explosion.totalFrames) {
+        _results.push(i++);
+      } else {
+        _results.push(explosions.splice(i, 1));
+      }
+    }
+    return _results;
   };
 
   drawBackground = function() {

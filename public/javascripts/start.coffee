@@ -1,3 +1,4 @@
+Explosion = require('./explosion')
 mainLoop = () ->
   window.requestAnimationFrame ->
     mainLoop()
@@ -6,12 +7,27 @@ mainLoop = () ->
   drawBackground()
   paddle1.draw()
   paddle2.draw()
-  puck.draw()
+  # puck.draw()
+  for explosion in explosions
+    explosion.draw()
 
 animationLoop = () ->
-  setTimeout(animationLoop, 1000/30)
+  setTimeout(animationLoop, 1000/20)
+  $('#pong').offset({top: Math.random()*5 - 2, left: Math.random()*5 - 2})
   paddle1.updateFrame()
   paddle2.updateFrame()
+  for n in [1..4]
+    explosions.push(new Explosion(puck.x - 20 + Math.random()*40, puck.y - 20 + Math.random()*40))
+
+  for explosion in explosions
+    explosion.updateFrame()
+  i = 0
+  while i < explosions.length
+    explosion = explosions[i]
+    if explosion.currentFrame < explosion.totalFrames
+      i++
+    else
+      explosions.splice(i, 1)
 
 drawBackground = ->
   color = 128
