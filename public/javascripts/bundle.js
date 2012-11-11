@@ -25,35 +25,35 @@ require._core = {
 require.resolve = (function () {
     return function (x, cwd) {
         if (!cwd) cwd = '/';
-        
+
         if (require._core[x]) return x;
         var path = require.modules.path();
         cwd = path.resolve('/', cwd);
         var y = cwd || '/';
-        
+
         if (x.match(/^(?:\.\.?\/|\/)/)) {
             var m = loadAsFileSync(path.resolve(y, x))
                 || loadAsDirectorySync(path.resolve(y, x));
             if (m) return m;
         }
-        
+
         var n = loadNodeModulesSync(x, y);
         if (n) return n;
-        
+
         throw new Error("Cannot find module '" + x + "'");
-        
+
         function loadAsFileSync (x) {
             x = path.normalize(x);
             if (require.modules[x]) {
                 return x;
             }
-            
+
             for (var i = 0; i < require.extensions.length; i++) {
                 var ext = require.extensions[i];
                 if (require.modules[x + ext]) return x + ext;
             }
         }
-        
+
         function loadAsDirectorySync (x) {
             x = x.replace(/\/+$/, '');
             var pkgfile = path.normalize(x + '/package.json');
@@ -73,10 +73,10 @@ require.resolve = (function () {
                     if (m) return m;
                 }
             }
-            
+
             return loadAsFileSync(x + '/index');
         }
-        
+
         function loadNodeModulesSync (x, start) {
             var dirs = nodeModulesPathsSync(start);
             for (var i = 0; i < dirs.length; i++) {
@@ -86,23 +86,23 @@ require.resolve = (function () {
                 var n = loadAsDirectorySync(dir + '/' + x);
                 if (n) return n;
             }
-            
+
             var m = loadAsFileSync(x);
             if (m) return m;
         }
-        
+
         function nodeModulesPathsSync (start) {
             var parts;
             if (start === '/') parts = [ '' ];
             else parts = path.normalize(start).split('/');
-            
+
             var dirs = [];
             for (var i = parts.length - 1; i >= 0; i--) {
                 if (parts[i] === 'node_modules') continue;
                 var dir = parts.slice(0, i + 1).join('/') + '/node_modules';
                 dirs.push(dir);
             }
-            
+
             return dirs;
         }
     };
@@ -118,13 +118,13 @@ require.alias = function (from, to) {
         res = require.resolve(from, '/');
     }
     var basedir = path.dirname(res);
-    
+
     var keys = (Object.keys || function (obj) {
         var res = [];
         for (var key in obj) res.push(key);
         return res;
     })(require.modules);
-    
+
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         if (key.slice(0, basedir.length + 1) === basedir + '/') {
@@ -141,18 +141,18 @@ require.alias = function (from, to) {
     var process = {};
     var global = typeof window !== 'undefined' ? window : {};
     var definedProcess = false;
-    
+
     require.define = function (filename, fn) {
         if (!definedProcess && require.modules.__browserify_process) {
             process = require.modules.__browserify_process();
             definedProcess = true;
         }
-        
+
         var dirname = require._core[filename]
             ? ''
             : require.modules.path().dirname(filename)
         ;
-        
+
         var require_ = function (file) {
             var requiredModule = require(file, dirname);
             var cached = require.cache[require.resolve(file, dirname)];
@@ -176,7 +176,7 @@ require.alias = function (from, to) {
             loaded : false,
             parent: null
         };
-        
+
         require.modules[filename] = function () {
             require.cache[filename] = module_;
             fn.call(
@@ -286,7 +286,7 @@ path = normalizeArray(filter(path.split('/'), function(p) {
   if (path && trailingSlash) {
     path += '/';
   }
-  
+
   return (isAbsolute ? '/' : '') + path;
 };
 
@@ -483,8 +483,8 @@ require.define("/init.js",function(require,module,exports,__dirname,__filename,p
   Paddle = require('./paddle')
 
   puck = new Puck(100, 100, 10)
-  paddle1 = new Paddle(50, 50, 50, 20, 'blue')
-  paddle2 = new Paddle(550, 550, 50, 20, 'red')
+  paddle1 = new Paddle(50, 50, 150, 40, 'img/redp.png')
+  paddle2 = new Paddle(550, 550, 150, 40, 'img/bluep.png')
 
   socket.on('paddle_1_pos', function(x){
     paddle1.x = x
@@ -501,17 +501,28 @@ require.define("/paddle.coffee",function(require,module,exports,__dirname,__file
 
   Paddle = (function() {
 
-    function Paddle(x, y, width, height, color) {
+    function Paddle(x, y, width, height, src) {
       this.x = x;
       this.y = y;
       this.width = width;
       this.height = height;
-      this.color = color;
+      this.sprites = new Image();
+      this.sprites.src = src;
+      this.currentFrame = 0;
+      this.frameWidth = 167;
+      this.frameHeight = 60;
+      this.totalFrames = 7;
     }
 
+    Paddle.prototype.updateFrame = function() {
+      this.currentFrame += 1;
+      if (this.currentFrame >= this.totalFrames) {
+        return this.currentFrame = 0;
+      }
+    };
+
     Paddle.prototype.draw = function() {
-      ctx.fillStyle = this.color;
-      return ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+      return ctx.drawImage(this.sprites, this.currentFrame * this.frameWidth, 0, this.frameWidth, this.frameHeight, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
     };
 
     return Paddle;
@@ -519,6 +530,48 @@ require.define("/paddle.coffee",function(require,module,exports,__dirname,__file
   })();
 
   module.exports = Paddle;
+
+}).call(this);
+
+});
+
+require.define("/start.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  var animationLoop, drawBackground, mainLoop, start, updateFromMouse;
+
+  mainLoop = function() {
+    window.requestAnimationFrame(function() {
+      return mainLoop();
+    });
+    updateFromMouse();
+    drawBackground();
+    paddle1.draw();
+    paddle2.draw();
+    return puck.draw();
+  };
+
+  animationLoop = function() {
+    setTimeout(animationLoop, 1000 / 30);
+    paddle1.updateFrame();
+    return paddle2.updateFrame();
+  };
+
+  drawBackground = function() {
+    var color;
+    color = 128;
+    ctx.fillStyle = "rgb(" + color + "," + color + "," + color + ")";
+    return ctx.fillRect(0, 0, canvas.width, canvas.height);
+  };
+
+  updateFromMouse = function() {
+    return socket.emit('mouse_pos', mousex);
+  };
+
+  start = function() {
+    mainLoop();
+    return animationLoop();
+  };
+
+  module.exports = start;
 
 }).call(this);
 

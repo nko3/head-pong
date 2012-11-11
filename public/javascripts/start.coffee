@@ -3,10 +3,16 @@ mainLoop = () ->
     mainLoop()
   updateFromMouse()
 
+
   drawBackground()
   paddle1.draw()
   paddle2.draw()
   puck.draw()
+
+animationLoop = () ->
+  setTimeout(animationLoop, 1000/30)
+  paddle1.updateFrame()
+  paddle2.updateFrame()
 
 drawBackground = ->
   color = 128
@@ -16,4 +22,7 @@ drawBackground = ->
 updateFromMouse = ->
   socket.emit('mouse_pos', mousex)
 
-module.exports = mainLoop
+start = ->
+  mainLoop()
+  animationLoop()
+module.exports = start
