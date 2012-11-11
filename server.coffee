@@ -31,15 +31,20 @@ io = require('socket.io').listen(server, app)
 global.canvas_width = 800
 global.canvas_height = 600
 
+games = []
+randomString = -> Math.random().toString(36).substring(7)
+
 io.sockets.on 'connection', (socket) ->
   console.log('you have connected')
 
-
-  game = new Game(socket)
+  if games.length == 0
+    games.push(new Game(socket))
+  else
+    openGames = games.filter (game) -> game.open
+    if openGames.length > 0
+      openGames[0].join(socket)
+    else
+      games.push(new Game(socket))
 
   socket.on 'paddle_hit', ->
     console.log('ball hit by paddle')
-
-  socket.on 'mouse_pos', (x) ->
-    game.updatePaddle(1, x)
-    game.updatePaddle(2, x)
