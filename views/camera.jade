@@ -2,6 +2,7 @@ doctype 5
 html(lang="en")
   head
     title= "handofpong"
+    link(rel='stylesheet', href='/stylesheets/video.css')
   body
     h1 handofpong
     h2#message
@@ -10,7 +11,7 @@ html(lang="en")
       button#stopbutton Stop camera
       button#trackbutton Toogle tracking
       #coordinates
-      video#camvideo(autoplay, style="float:left; margin-right:1em;", controls)
+      video#camvideo(autoplay, controls, style="float:left; margin-right:1em;", class="flip-horizontal")
         Your browser do not support video, move on! user Chrome instead.
 
     #tracker(style="position:absolute; border-style:dashed;")

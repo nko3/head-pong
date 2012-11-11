@@ -43,17 +43,19 @@
         scaleFactor: 1.1,
         classifier: objectdetect.frontalface
       }, function(coords) {
-        var left, top;
+        var height, left, top, width;
         if (coords[0]) {
           coords = smoother.smooth(coords[0]);
-          left = "" + (~~(coords[0][0] + coords[0][2] * 1.0 / 8 + _videoleft)) + "px";
-          top = "" + (~~(coords[0][1] + coords[0][3] * 0.8 / 8 + _videotop)) + "px";
+          left = ~~(coords[0] + coords[2] * 1.0 / 8 + $(video).offset().left);
+          top = ~~(coords[1] + coords[3] * 0.8 / 8 + $(video).offset().top);
+          width = ~~(coords[2] * 6 / 8);
+          height = ~~(coords[3] * 6 / 8);
           $("#coordinates").html("(" + (~~coords[0]) + ", " + (~~coords[1]) + ")");
           return $("#tracker").css({
-            "left": ~~(coords[0] + coords[2] * 1.0 / 8 + $(video).offset().left) + "px",
-            "top": ~~(coords[1] + coords[3] * 0.8 / 8 + $(video).offset().top) + "px",
-            "width": ~~(coords[2] * 6 / 8) + "px",
-            "height": ~~(coords[3] * 6 / 8) + "px",
+            "left": ($(video).width() - left - width) + "px",
+            "top": top + "px",
+            "width": width + "px",
+            "height": height + "px",
             "display": "block"
           });
         } else {
