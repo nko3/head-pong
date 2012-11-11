@@ -8,27 +8,38 @@ class Game
     @paddle2 = new Paddle(550, 550, 150, 40, socket)
     @open = true
     @newSocket(socket)
+    @mainLoop()
+    @x = 100
+    @y = 100
 
   join: (socket) ->
     @newSocket(socket)
     @open = false
-    @mainLoop()
 
   mainLoop: ->
-    unless @open
-      @puck.move(@paddle1, @paddle2)
+    @puck.move(@paddle1, @paddle2)
+    if @p1socket
       @p1socket.emit('puck_pos', @puck.x, @puck.y)
+    else
+      @paddle1.ai(@puck)
+      @updatePaddle(1, @paddle1.x)
+    if @p2socket
       @p2socket.emit('puck_pos', @puck.x, @puck.y)
+    else
+      @paddle2.ai(@puck)
+      @updatePaddle(2, @paddle2.x)
 
-      setTimeout =>
-        @mainLoop()
-      , 1000/60
+    setTimeout =>
+      @mainLoop()
+    , 1000/60
 
   updatePaddle: (number, x) ->
     if number == 1
       @paddle1.x = x
     else
       @paddle2.x = x
+
+    console.log('updating paddle')
 
     @p1socket.emit("paddle_#{number}_pos", x) if @p1socket?
     @p2socket.emit("paddle_#{number}_pos", x) if @p2socket?
