@@ -3,14 +3,26 @@
 <head>
   <title>HeadPong</title>
   <link href='../public/stylesheets/mainstyle.css' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="../public/stylesheets/video.css">
+  <script type="text/javascript" src="../public/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="../public/javascripts/bundle.js"></script>
 </head>
 <body>
   <header>
     <h1>HeadPong</h1>
-    <h4>I didn't choose the pong life<br> the pong life chose me</h4>
+    <p>I didn't choose the pong life, the pong life chose me</p>
   </header>
+  <nav>
+  <ul>
+    <li><a href="">Home</a></li>
+    <li><a href="">About</a></li>
+  </ul>
+</nav>
   <section>
-    canvas: to be or not to be here
+    <div id="wr-camera">
+      <canvas style="background-color:#999" width="180" height="135" id="camera"></canvas>
+    </div>
+    <canvas style="background-color:#aaa" width="800" height="600" id="pong"></canvas>
   </section>
   <footer>
     Footer & stuff
