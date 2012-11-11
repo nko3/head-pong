@@ -33,16 +33,15 @@
   };
 
   fallback = function(e) {
-    alert("err: " + e);
-    return show_msg("Not able to connect with your camera device, did you authorized us?");
+    return show_msg("Not able to connect with your camera device, did you authorized us? " + e);
   };
 
   not_supported = function() {
-    return alert("We're using cool stuff, so you need to move to a decent browser, like Chrome.");
+    return show_msg("We're using cool stuff, so you need to move to a decent browser, like Chrome.");
   };
 
   show_msg = function(message) {
-    return $("#message").html(message);
+    return alert(message);
   };
 
   init_camera = function() {
