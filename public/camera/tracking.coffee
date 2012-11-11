@@ -27,6 +27,9 @@ _stop = true
 
 smoother = new Smoother(0.85, [0, 0, 0, 0, 0])
 
+video = $("#camvideo")
+canvas = $("#pong")
+
 ## actions
 
 $("#trackbutton").on "click", ->
@@ -37,8 +40,6 @@ $("#trackbutton").on "click", ->
 
 track = ->
   requestAnimationFrame(track) unless _stop
-  video = $("#camvideo")
-  canvas = $("#pong")
   if video.readyState == video.HAVE_ENOUGH_DATA
     $("#camvideo").objectdetect "all",
       {scaleMin: 3, scaleFactor: 1.1, classifier: objectdetect.frontalface},
@@ -50,7 +51,11 @@ track = ->
           top = ~~(coords[1] + coords[3] * 0.8/8 + $(video).offset().top)
           width = ~~(coords[2] * 6/8)
           height = ~~(coords[3] * 6/8)
-          send_coordinates($(canvas).width() - (left - $(canvas).width()), top)
+
+          canvas_width = $(canvas).width() + $(canvas).offset().left
+          send_coordinates(canvas_width - 30 - 1.7*(left - $(video).offset().left), top)
+          console.log "left: #{left}, canvas: #{canvas_width}, offset: #{$(video).offset().left}"
+
           $("#tracker").css
             "left":    ($(video).width() - left - width) + "px",
             "top":     (top) + "px",
