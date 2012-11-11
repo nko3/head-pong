@@ -1,0 +1,33 @@
+@import url(http://fonts.googleapis.com/css?family=Press+Start+2P);
+
+body{
+	background: #ddd url('../img/escheresque.png') repeat right top;
+}
+
+header, section, footer{
+	width: 800px;
+	display: block;
+	margin: 0 auto;
+	padding: 15px 20px;
+}
+
+header{
+	background-color: red;
+}
+
+h1{
+	font-family: 'Press Start 2P', cursive;
+	font-size: 55px;
+	text-align: center;
+	margin:	15px auto;
+	color: white;
+}
+
+section{
+	background-color: black;
+	background: #000 url('../img/arches.png') repeat right top;
+}
+
+footer{
+	background-color: red;
+}
