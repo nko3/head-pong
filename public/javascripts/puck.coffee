@@ -5,7 +5,7 @@ class Puck
     socket.on 'puck_pos', (x, y) =>
       @x = x
       @y = y
-      explosion = new Explosion(@x, @y)
+      explosion = new Explosion(@x - 20 + Math.random()*40, @y - 20 + Math.random()*40)
       explosions.push(explosion)
 
   draw: (fillStyle = @color) ->

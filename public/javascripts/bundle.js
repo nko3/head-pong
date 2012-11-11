@@ -480,6 +480,25 @@ require.define("/paddle.coffee",function(require,module,exports,__dirname,__file
 
 });
 
+require.define("/init.js",function(require,module,exports,__dirname,__filename,process,global){(function(){
+  Puck = require('./puck')
+  Paddle = require('./paddle')
+
+  puck = new Puck(100, 100, 10)
+  paddle1 = new Paddle(50, 50, 150, 40, 'img/redp.png')
+  paddle2 = new Paddle(550, 550, 150, 40, 'img/bluep.png')
+  explosions = []
+
+  socket.on('paddle_1_pos', function(x){
+    paddle1.x = x
+  })
+  socket.on('paddle_2_pos', function(x){
+    paddle2.x = x
+  })
+}())
+
+});
+
 require.define("/explosion.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
   var Explosion;
 
@@ -499,10 +518,7 @@ require.define("/explosion.coffee",function(require,module,exports,__dirname,__f
     }
 
     Explosion.prototype.updateFrame = function() {
-      this.currentFrame += 1;
-      if (this.currentFrame >= this.totalFrames) {
-        return this.currentFrame = 0;
-      }
+      return this.currentFrame += 1;
     };
 
     Explosion.prototype.draw = function() {
@@ -514,6 +530,48 @@ require.define("/explosion.coffee",function(require,module,exports,__dirname,__f
   })();
 
   module.exports = Explosion;
+
+}).call(this);
+
+});
+
+require.define("/puck.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  var Explosion, Puck;
+
+  Explosion = require('./explosion');
+
+  Puck = (function() {
+
+    function Puck(x, y, radius) {
+      var _this = this;
+      this.x = x;
+      this.y = y;
+      this.radius = radius;
+      this.color = 'black';
+      socket.on('puck_pos', function(x, y) {
+        var explosion;
+        _this.x = x;
+        _this.y = y;
+        explosion = new Explosion(_this.x - 20 + Math.random() * 40, _this.y - 20 + Math.random() * 40);
+        return explosions.push(explosion);
+      });
+    }
+
+    Puck.prototype.draw = function(fillStyle) {
+      if (fillStyle == null) {
+        fillStyle = this.color;
+      }
+      ctx.fillStyle = fillStyle;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+      return ctx.fill();
+    };
+
+    return Puck;
+
+  })();
+
+  module.exports = Puck;
 
 }).call(this);
 
@@ -542,14 +600,23 @@ require.define("/start.coffee",function(require,module,exports,__dirname,__filen
   };
 
   animationLoop = function() {
-    var explosion, _i, _len, _results;
-    setTimeout(animationLoop, 1000 / 30);
+    var explosion, i, _i, _len, _results;
+    setTimeout(animationLoop, 1000 / 15);
     paddle1.updateFrame();
     paddle2.updateFrame();
-    _results = [];
     for (_i = 0, _len = explosions.length; _i < _len; _i++) {
       explosion = explosions[_i];
-      _results.push(explosion.updateFrame());
+      explosion.updateFrame();
+    }
+    i = 0;
+    _results = [];
+    while (i < explosions.length) {
+      explosion = explosions[i];
+      if (explosion.currentFrame < explosion.totalFrames) {
+        _results.push(i++);
+      } else {
+        _results.push(explosions.splice(i, 1));
+      }
     }
     return _results;
   };
@@ -573,67 +640,6 @@ require.define("/start.coffee",function(require,module,exports,__dirname,__filen
   module.exports = start;
 
 }).call(this);
-
-});
-
-require.define("/puck.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var Explosion, Puck;
-
-  Explosion = require('./explosion');
-
-  Puck = (function() {
-
-    function Puck(x, y, radius) {
-      var _this = this;
-      this.x = x;
-      this.y = y;
-      this.radius = radius;
-      this.color = 'black';
-      socket.on('puck_pos', function(x, y) {
-        var explosion;
-        _this.x = x;
-        _this.y = y;
-        explosion = new Explosion(_this.x, _this.y);
-        return explosions.push(explosion);
-      });
-    }
-
-    Puck.prototype.draw = function(fillStyle) {
-      if (fillStyle == null) {
-        fillStyle = this.color;
-      }
-      ctx.fillStyle = fillStyle;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      return ctx.fill();
-    };
-
-    return Puck;
-
-  })();
-
-  module.exports = Puck;
-
-}).call(this);
-
-});
-
-require.define("/init.js",function(require,module,exports,__dirname,__filename,process,global){(function(){
-  Puck = require('./puck')
-  Paddle = require('./paddle')
-
-  puck = new Puck(100, 100, 10)
-  paddle1 = new Paddle(50, 50, 150, 40, 'img/redp.png')
-  paddle2 = new Paddle(550, 550, 150, 40, 'img/bluep.png')
-  explosions = []
-
-  socket.on('paddle_1_pos', function(x){
-    paddle1.x = x
-  })
-  socket.on('paddle_2_pos', function(x){
-    paddle2.x = x
-  })
-}())
 
 });
 

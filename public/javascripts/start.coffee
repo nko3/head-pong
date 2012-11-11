@@ -13,11 +13,18 @@ mainLoop = () ->
     explosion.draw()
 
 animationLoop = () ->
-  setTimeout(animationLoop, 1000/30)
+  setTimeout(animationLoop, 1000/15)
   paddle1.updateFrame()
   paddle2.updateFrame()
   for explosion in explosions
     explosion.updateFrame()
+  i = 0
+  while i < explosions.length
+    explosion = explosions[i]
+    if explosion.currentFrame < explosion.totalFrames
+      i++
+    else
+      explosions.splice(i, 1)
 
 drawBackground = ->
   color = 128

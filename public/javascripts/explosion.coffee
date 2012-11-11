@@ -9,8 +9,6 @@ class Explosion
 
   updateFrame: ->
     @currentFrame += 1
-    if @currentFrame >= @totalFrames
-      @currentFrame = 0
 
   draw: ->
     ctx.drawImage(@sprites,
