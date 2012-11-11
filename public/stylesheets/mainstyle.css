@@ -60,8 +60,8 @@ nav li a {
 	padding: 8px 15px;
 	text-decoration: none;
 	font-weight: bold;
-	color: white;	
-	border-right: 1px solid #ccc; 
+	color: white;
+	border-right: 1px solid #ccc;
 }
 
 #vote {
@@ -97,7 +97,7 @@ section{
 
 }
 
-#camera {
+#camvideo {
 	border-radius: 5px;
 }
 
