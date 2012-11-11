@@ -29,6 +29,7 @@ header p{
 	font-family: 'Strait', sans-serif;
 	font-size: 20px;
 	margin: 0px;
+	text-align: center;
 }
 
 nav{
@@ -41,7 +42,7 @@ nav	ul{
 	margin: 0px;
 	width: 100%;
 	height: 100%;
-
+	padding: 0px 240px;
 }
 
 nav li{
@@ -63,6 +64,9 @@ nav li a {
 	border-right: 1px solid #ccc; 
 }
 
+#vote {
+	padding: 3px;
+}
 
 section{
 	background-color: black;
@@ -72,13 +76,47 @@ section{
 	width: 990px;
 }
 
-canvas {
-	/*margin: 0px 70px;*/
+#side{
+	float: left;
+	width: 180px;
+	height: 600px;
+	/*border: 1px solid #333;*/
+}
+
+#wpcamera{
+	width: 180px;
+	height: 350px;
+	/*background-color: red;*/
+	margin-bottom: 15px;
+}
+
+#wpcamera button{
+	font-family: 'Press Start 2P', cursive;
+	width: 100%;
+	height: 50px;
+
 }
 
 #camera {
-	float: left;
-	margin-top: 230px;
+	border-radius: 5px;
+}
+
+#button {
+	width:116px;
+	height: 26px;
+	margin: 10px auto;
+	margin-top: 5px;
+}
+
+#message{
+	background-color: #333;
+	margin: 0 auto;
+	width: 130px;
+	height: 100px;
+	color: white;
+	font-family: 'Press Start 2P', cursive;
+	padding: 10px;
+	margin-top: 20px;
 	border-radius: 5px;
 }
 
@@ -90,4 +128,54 @@ canvas {
 
 footer{
 	background-color: #CF0000;
+}
+
+footer p{
+	font-family: 'Strait', sans-serif;
+	font-size: 30px;
+	margin: 0px;
+	text-align: center;
+}
+
+footer a{
+	color: black;
+	text-decoration: none;
+}
+
+#meme{
+	margin-top: 30px;
+	width: 550px;
+	height: 530px;
+	float: left;
+	margin-left: 40px;
+}
+
+#info{
+	margin-top: 30px;
+	width: 330px;
+	height: 400px;
+	background-color: #CF0000;
+	float: left;
+	margin-left: 15px;
+	border-radius: 5px;
+	padding: 15px;
+}
+
+#info p{
+	font-family: 'Press Start 2P', cursive;
+	color: white;
+}
+
+#info a{
+	text-decoration: none;
+	font-family: 'Press Start 2P', cursive;
+	color: white;
+	display: block;
+	border-radius: 10px;
+	background-color: #111;
+	font-size: 30px;
+	height: 30px;
+	width: 120px;
+	margin: 0 auto;
+	padding: 20px 80px;
 }

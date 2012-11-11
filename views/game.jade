@@ -12,13 +12,14 @@ html(lang="en")
 
     video#camvideo(autoplay, style="float:left; margin-right:1em;", class="flip-horizontal", width=180, height=175)
       Your browser do not support video, move on! user Chrome instead.
-    #coordinates (,)
-    hr
-    button#camerabutton Start camera
-    br
-    button#stopbutton Stop camera
-    br
-    button#trackbutton Toogle tracking
+    #debug(style="display:none;")
+        #coordinates (,)
+        hr
+        button#camerabutton Start camera
+        br
+        button#stopbutton Stop camera
+        br
+        button#trackbutton Toogle tracking
 
     #tracker(style="position:absolute; border-style:dashed; display:none;")
 
