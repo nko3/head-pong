@@ -1,6 +1,6 @@
 #Game knows:
 #Player API (creation, live, enliven, communicateWithClient, socket)
-#Puck API (creation, move)
+#Puck API (creation, move, x, y)
 #'top' and 'bottom' as keywords to be sent to the client <- probably not good
 class Game
   constructor: (socket) ->
@@ -19,16 +19,17 @@ class Game
 
   mainLoop: ->
     @puck.move(@p1.paddle, @p2.paddle)
-    @p1.communicateWithClient(@puck)
-    @p2.communicateWithClient(@puck)
+    @tellPlayers('puck_pos', @puck.x, @puck.y)
+    @p1.movePaddle(@puck)
+    @p2.movePaddle(@puck)
 
     setTimeout =>
       @mainLoop()
     , 1000/60
 
-  tellPlayers: (message, args) ->
-    @p2.socket.emit(message, args) if @p2 && @p2.socket && @p2.live
-    @p1.socket.emit(message, args) if @p1 && @p1.socket && @p1.live
+  tellPlayers: (message, args...) ->
+    @p2.socket.emit(message, args...) if @p2 && @p2.socket && @p2.live
+    @p1.socket.emit(message, args...) if @p1 && @p1.socket && @p1.live
 
   playerLeaves: ->
     if @p1.live or @p2.live

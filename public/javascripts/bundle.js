@@ -676,31 +676,6 @@ require.define("/javascripts/explosion.coffee",function(require,module,exports,_
 
 });
 
-require.define("/javascripts/init.js",function(require,module,exports,__dirname,__filename,process,global){(function(){
-  Puck = require('./puck')
-  Paddle = require('./paddle')
-
-  puck = new Puck(100, 100, 10)
-  paddle1 = new Paddle(50, 50, 150, 40, 'img/redp.png')
-  paddle2 = new Paddle(550, 550, 150, 40, 'img/bluep.png')
-  explosions = []
-
-  socket.on('paddle_top_pos', function(x){
-    paddle1.x = x
-  })
-  socket.on('paddle_bottom_pos', function(x){
-    paddle2.x = x
-  })
-  socket.on('other_connect', function(){
-    $('#message').html("The being that you are playing against passes the turing test")
-  })
-  socket.on('other_disconnect', function(){
-    $('#message').html("Please enjoy battling your robot overlords while we search for another player")
-  })
-}())
-
-});
-
 require.define("/javascripts/paddle.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
   var Paddle;
 
@@ -727,7 +702,6 @@ require.define("/javascripts/paddle.coffee",function(require,module,exports,__di
     };
 
     Paddle.prototype.draw = function() {
-      console.log(this.x);
       return ctx.drawImage(this.sprites, this.currentFrame * this.frameWidth, 0, this.frameWidth, this.frameHeight, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
     };
 
@@ -738,6 +712,31 @@ require.define("/javascripts/paddle.coffee",function(require,module,exports,__di
   module.exports = Paddle;
 
 }).call(this);
+
+});
+
+require.define("/javascripts/init.js",function(require,module,exports,__dirname,__filename,process,global){(function(){
+  Puck = require('./puck')
+  Paddle = require('./paddle')
+
+  puck = new Puck(100, 100, 10)
+  paddle1 = new Paddle(50, 50, 150, 40, 'img/redp.png')
+  paddle2 = new Paddle(550, 550, 150, 40, 'img/bluep.png')
+  explosions = []
+
+  socket.on('paddle_top_pos', function(x){
+    paddle1.x = x
+  })
+  socket.on('paddle_bottom_pos', function(x){
+    paddle2.x = x
+  })
+  socket.on('other_connect', function(){
+    $('#message').html("The being that you are playing against passes the turing test")
+  })
+  socket.on('other_disconnect', function(){
+    $('#message').html("Please enjoy battling your robot overlords while we search for another player")
+  })
+}())
 
 });
 
