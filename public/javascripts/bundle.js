@@ -533,45 +533,6 @@ require.define("/javascripts/animationFrame.js",function(require,module,exports,
 }());
 });
 
-require.define("/javascripts/paddle.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var Paddle;
-
-  Paddle = (function() {
-
-    function Paddle(x, y, width, height, src) {
-      this.x = x;
-      this.y = y;
-      this.width = width;
-      this.height = height;
-      this.sprites = new Image();
-      this.sprites.src = src;
-      this.currentFrame = 0;
-      this.frameWidth = 167;
-      this.frameHeight = 60;
-      this.totalFrames = 7;
-    }
-
-    Paddle.prototype.updateFrame = function() {
-      this.currentFrame += 1;
-      if (this.currentFrame >= this.totalFrames) {
-        return this.currentFrame = 0;
-      }
-    };
-
-    Paddle.prototype.draw = function() {
-      return ctx.drawImage(this.sprites, this.currentFrame * this.frameWidth, 0, this.frameWidth, this.frameHeight, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
-    };
-
-    return Paddle;
-
-  })();
-
-  module.exports = Paddle;
-
-}).call(this);
-
-});
-
 require.define("/javascripts/explosion.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
   var Explosion;
 
@@ -686,6 +647,51 @@ require.define("/javascripts/start.coffee",function(require,module,exports,__dir
 
 });
 
+require.define("/javascripts/init.js",function(require,module,exports,__dirname,__filename,process,global){(function(){
+  socket = io.connect();
+  socket.emit('connection')
+
+  socket.on('other_connect', function(){
+    $('#message').html("The being that you are playing against passes the turing test")
+  })
+  socket.on('other_disconnect', function(){
+    $('#message').html("Please enjoy battling your robot overlords while we search for another player")
+  })
+
+  canvas = document.getElementById("pong")
+  ctx = canvas.getContext("2d")
+  explosions = []
+
+  Puck = require('./puck')
+  Paddle = require('./paddle')
+
+  puck = new Puck(100, 100, 10)
+  socket.on('live', function(player){
+    position = player
+    if (player == 'top') {
+      myPaddle = new Paddle(50, 50, 150, 40, 'img/redp.png')
+      otherPaddle = new Paddle(550, 550, 150, 40, 'img/bluep.png')
+      socket.on('paddle_bottom_pos', function(x){
+        otherPaddle.x = x
+      })
+    } else {
+      otherPaddle = new Paddle(50, 50, 150, 40, 'img/redp.png')
+      myPaddle = new Paddle(550, 550, 150, 40, 'img/bluep.png')
+      socket.on('paddle_top_pos', function(x){
+        otherPaddle.x = x
+      })
+    }
+    start = require('./start')
+    start()
+  })
+
+
+
+
+}())
+
+});
+
 require.define("/javascripts/puck.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
   var Puck;
 
@@ -756,48 +762,48 @@ require.define("/javascripts/puck.coffee",function(require,module,exports,__dirn
 
 });
 
-require.define("/javascripts/init.js",function(require,module,exports,__dirname,__filename,process,global){(function(){
-  socket = io.connect();
-  socket.emit('connection')
+require.define("/javascripts/paddle.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  var Paddle;
 
-  socket.on('other_connect', function(){
-    $('#message').html("The being that you are playing against passes the turing test")
-  })
-  socket.on('other_disconnect', function(){
-    $('#message').html("Please enjoy battling your robot overlords while we search for another player")
-  })
+  Paddle = (function() {
 
-  canvas = document.getElementById("pong")
-  ctx = canvas.getContext("2d")
-  explosions = []
-
-  Puck = require('./puck')
-  Paddle = require('./paddle')
-
-  puck = new Puck(100, 100, 10)
-  socket.on('live', function(player){
-    position = player
-    if (player == 'top') {
-      myPaddle = new Paddle(50, 50, 150, 40, 'img/redp.png')
-      otherPaddle = new Paddle(550, 550, 150, 40, 'img/bluep.png')
-      socket.on('paddle_bottom_pos', function(x){
-        otherPaddle.x = x
-      })
-    } else {
-      otherPaddle = new Paddle(50, 50, 150, 40, 'img/redp.png')
-      myPaddle = new Paddle(550, 550, 150, 40, 'img/bluep.png')
-      socket.on('paddle_top_pos', function(x){
-        otherPaddle.x = x
-      })
+    function Paddle(x, y, width, height, src) {
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+      this.drawx = this.x;
+      this.sprites = new Image();
+      this.sprites.src = src;
+      this.currentFrame = 0;
+      this.frameWidth = 167;
+      this.frameHeight = 60;
+      this.totalFrames = 7;
     }
-    start = require('./start')
-    start()
-  })
 
+    Paddle.prototype.slide = function() {
+      return this.drawx += (this.x - this.drawx) / 10;
+    };
 
+    Paddle.prototype.updateFrame = function() {
+      this.currentFrame += 1;
+      if (this.currentFrame >= this.totalFrames) {
+        return this.currentFrame = 0;
+      }
+    };
 
+    Paddle.prototype.draw = function() {
+      this.slide();
+      return ctx.drawImage(this.sprites, this.currentFrame * this.frameWidth, 0, this.frameWidth, this.frameHeight, this.drawx - this.width / 2, this.y - this.height / 2, this.width, this.height);
+    };
 
-}())
+    return Paddle;
+
+  })();
+
+  module.exports = Paddle;
+
+}).call(this);
 
 });
 
