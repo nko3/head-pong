@@ -42,38 +42,39 @@ class Game
     @p1socket.emit("paddle_#{number}_pos", x) if @p1socket?
     @p2socket.emit("paddle_#{number}_pos", x) if @p2socket?
 
+  setPositionEvent: (playerNumber, socket) ->
+    socket.on 'mouse_pos', (x) =>
+        @updatePaddle(playerNumber, x)
+
   newSocket: (socket) ->
     if @p1socket
-      socket.on 'mouse_pos', (x) =>
-        @updatePaddle(2, x)
-      socket.on 'disconnect', (x) =>
-        if @p1socket and @p1socket != null
-          @p2socket = null
-          @open = true
-          console.log('p2 has shut down, leaving player 1')
-          @p1socket.emit('other_disconnect')
-        else
-          @open = false
-          console.log('p2 has shut down, leaving the game empty')
       @p2socket = socket
-      if @p1socket
-        @p2socket.emit('other_connect')
-        @p1socket.emit('other_connect')
+      @setPositionEvent(2, socket)
+      console.log('new socket 2: ' + @p2socket)
     else
-      socket.on 'mouse_pos', (x) =>
-        @updatePaddle(1, x)
-      socket.on 'disconnect', (x) =>
-        if @p2socket and @p2socket != null
-          @p1socket = null
-          @open = true
-          @p2socket.emit('other_disconnect')
-          console.log('p1 has shut down, leaving player 2')
-        else
-          @open = false
-          console.log('p1 has shut down, leaving the game empty')
       @p1socket = socket
-      if @p2socket
-        @p2socket.emit('other_connect')
-        @p1socket.emit('other_connect')
+      @setPositionEvent(1, socket)
+      console.log('new socket 1: ' + @p1socket)
+    @tellAboutConnections()
+    @setDisconnectEvent(socket)
+
+  tellAboutConnections: ->
+    if @p2socket && @p1socket
+      @p2socket.emit('other_connect')
+      @p1socket.emit('other_connect')
+
+  setDisconnectEvent: (socket) ->
+    socket.on 'disconnect', =>
+      if socket == @p1socket then @p1socket = null else @p2socket = null
+
+      if @p1socket or @p2socket
+        @open = true
+        console.log("You've shut down, leaving 1 player")
+      else
+        @open = false
+        console.log("You've shut down, making the room empty")
+
+      @p2socket.emit('other_disconnect') if @p2socket
+      @p1socket.emit('other_disconnect') if @p1socket
 
 module.exports = Game
