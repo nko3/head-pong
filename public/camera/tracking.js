@@ -35,11 +35,8 @@
   });
 
   track = function() {
-    if (!_stop) {
-      requestAnimationFrame(track);
-    }
     if (video.readyState === video.HAVE_ENOUGH_DATA) {
-      return $("#camvideo").objectdetect("all", {
+      $("#camvideo").objectdetect("all", {
         scaleMin: 3,
         scaleFactor: 1.1,
         classifier: objectdetect.frontalface
@@ -65,12 +62,14 @@
         }
       });
     }
+    if (!_stop) {
+      return setTimeout(track, 100);
+    }
   };
 
   send_coordinates = function(x, y) {
     socket.emit('mouse_pos', x);
     myPaddle.x = x;
-    console.log("x position: " + x + " for paddle: " + myPaddle);
     return $("#coordinates").html("(" + x + ", " + y + ")");
   };
 

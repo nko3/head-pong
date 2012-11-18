@@ -609,7 +609,7 @@ require.define("/javascripts/explosion.coffee",function(require,module,exports,_
 });
 
 require.define("/javascripts/start.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var Explosion, animationLoop, drawBackground, mainLoop, start;
+  var Explosion, animationLoop, drawBackground, mainLoop, motionLoop, start;
 
   Explosion = require('./explosion');
 
@@ -621,13 +621,25 @@ require.define("/javascripts/start.coffee",function(require,module,exports,__dir
     drawBackground();
     myPaddle.draw();
     otherPaddle.draw();
-    puck.move(myPaddle, otherPaddle);
     _results = [];
     for (_i = 0, _len = explosions.length; _i < _len; _i++) {
       explosion = explosions[_i];
       _results.push(explosion.draw());
     }
     return _results;
+  };
+
+  motionLoop = function() {
+    var position,
+      _this = this;
+    if (position = 'bottom') {
+      puck.move(myPaddle, otherPaddle);
+    } else {
+      puck.move(otherPaddle, myPaddle);
+    }
+    return setTimeout(function() {
+      return motionLoop();
+    }, 1000 / 30);
   };
 
   animationLoop = function() {
@@ -664,7 +676,8 @@ require.define("/javascripts/start.coffee",function(require,module,exports,__dir
 
   start = function() {
     mainLoop();
-    return animationLoop();
+    animationLoop();
+    return motionLoop();
   };
 
   module.exports = start;
@@ -710,9 +723,15 @@ require.define("/javascripts/puck.coffee",function(require,module,exports,__dirn
         this._reset();
       }
       if (this._collidedWith(paddle1)) {
-        return this._bouncePuck(paddle1);
+        this.dx += Math.random() * 10 - 5;
+        this.dy = Math.abs(this.dy);
+        this.dy += 0.2;
+        return this.y = paddle1.y + paddle1.height + this.radius;
       } else if (this._collidedWith(paddle2)) {
-        return this._bouncePuck(paddle2);
+        this.dx += Math.random() * 10 - 5;
+        this.dy = Math.abs(this.dy) * -1;
+        this.dy -= 0.2;
+        return this.y = paddle2.y - paddle2.height / 2 - this.radius;
       }
     };
 
@@ -725,31 +744,7 @@ require.define("/javascripts/puck.coffee",function(require,module,exports,__dirn
       return false;
     };
 
-    Puck.prototype._bouncePuck = function(paddle) {
-      this.dx += Math.random() * 10 - 5;
-      if (paddle.y < canvas.height) {
-        this.dy = Math.abs(this.dy);
-        this.dy += 0.2;
-        return this.y = paddle.y + paddle.height + this.radius;
-      } else {
-        this.dy = Math.abs(this.dy) * -1;
-        this.dy -= 0.2;
-        return this.y = paddle.y - paddle.height / 2 - this.radius;
-      }
-    };
-
-    Puck.prototype._reset = function() {
-      this.x = global.canvas_width / 2;
-      this.y = global.canvas_height / 2;
-      this.dx = Math.random() * 10 - 5;
-      this.dy = Math.random() * 10 - 5;
-      if (Math.abs(this.dy) < 0.5) {
-        this.dy *= 10;
-      }
-      if (Math.abs(this.dy) < 2.5) {
-        return this.dy *= 2;
-      }
-    };
+    Puck.prototype._reset = function() {};
 
     return Puck;
 
@@ -781,6 +776,7 @@ require.define("/javascripts/init.js",function(require,module,exports,__dirname,
 
   puck = new Puck(100, 100, 10)
   socket.on('live', function(player){
+    position = player
     if (player == 'top') {
       myPaddle = new Paddle(50, 50, 150, 40, 'img/redp.png')
       otherPaddle = new Paddle(550, 550, 150, 40, 'img/bluep.png')

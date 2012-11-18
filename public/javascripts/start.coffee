@@ -2,14 +2,21 @@ Explosion = require('./explosion')
 mainLoop = () ->
   window.requestAnimationFrame ->
     mainLoop()
-  #updateFromMouse() #handled in tracking
 
   drawBackground()
   myPaddle.draw()
   otherPaddle.draw()
-  puck.move(myPaddle, otherPaddle)
+
+
   for explosion in explosions
     explosion.draw()
+
+motionLoop = () ->
+  if position = 'bottom' then puck.move(myPaddle, otherPaddle) else puck.move(otherPaddle, myPaddle)
+
+  setTimeout =>
+    motionLoop()
+  , 1000/30
 
 animationLoop = () ->
   setTimeout(animationLoop, 1000/20)
@@ -40,5 +47,6 @@ drawBackground = ->
 start = ->
   mainLoop()
   animationLoop()
+  motionLoop()
 
 module.exports = start

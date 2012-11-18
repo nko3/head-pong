@@ -18,6 +18,7 @@
 
   puck = new Puck(100, 100, 10)
   socket.on('live', function(player){
+    position = player
     if (player == 'top') {
       myPaddle = new Paddle(50, 50, 150, 40, 'img/redp.png')
       otherPaddle = new Paddle(550, 550, 150, 40, 'img/bluep.png')

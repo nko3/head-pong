@@ -39,7 +39,6 @@ $("#trackbutton").on "click", ->
 ## handlers
 
 track = ->
-  requestAnimationFrame(track) unless _stop
   if video.readyState == video.HAVE_ENOUGH_DATA
     $("#camvideo").objectdetect "all",
       {scaleMin: 3, scaleFactor: 1.1, classifier: objectdetect.frontalface},
@@ -65,10 +64,11 @@ track = ->
         else
           hide_tracker()
 
+  setTimeout(track, 100) unless _stop
+
 send_coordinates = (x, y) ->
   socket.emit('mouse_pos', x)
   myPaddle.x = x
-  console.log("x position: #{x} for paddle: #{myPaddle}")
   $("#coordinates").html("(#{x}, #{y})")
 
 hide_tracker = ->

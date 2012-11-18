@@ -24,9 +24,15 @@ class Puck
       @_reset()
 
     if @_collidedWith(paddle1)
-      @_bouncePuck(paddle1)
+      @dx += (Math.random()*10 - 5)
+      @dy = Math.abs(@dy)
+      @dy += 0.2
+      @y = paddle1.y + paddle1.height + @radius
     else if @_collidedWith(paddle2)
-      @_bouncePuck(paddle2)
+      @dx += (Math.random()*10 - 5)
+      @dy = Math.abs(@dy) * -1
+      @dy -= 0.2
+      @y = paddle2.y - paddle2.height/2 - @radius
 
   _collidedWith: (paddle) ->
     if @x - @radius < paddle.x + paddle.width/2 && @x + @radius > paddle.x - paddle.width/2
@@ -34,24 +40,13 @@ class Puck
         return true
     return false
 
-  _bouncePuck: (paddle) ->
-    @dx += (Math.random()*10 - 5)
-    #surely there's some way to get rid of this duplication
-    if paddle.y < canvas.height
-      @dy = Math.abs(@dy)
-      @dy += 0.2
-      @y = paddle.y + paddle.height + @radius
-    else
-      @dy = Math.abs(@dy) * -1
-      @dy -= 0.2
-      @y = paddle.y - paddle.height/2 - @radius
-
   _reset: ->
-    @x = global.canvas_width/2
-    @y = global.canvas_height/2
-    @dx = Math.random()*10 - 5
-    @dy = Math.random()*10 - 5
-    #make sure it's not super slow
-    if Math.abs(@dy) < 0.5 then @dy *= 10
-    if Math.abs(@dy) < 2.5 then @dy *= 2
+    # @x = global.canvas_width/2
+    # @y = global.canvas_height/2
+    # @dx = Math.random()*10 - 5
+    # @dy = Math.random()*10 - 5
+    # #make sure it's not super slow
+    # if Math.abs(@dy) < 0.5 then @dy *= 10
+    # if Math.abs(@dy) < 2.5 then @dy *= 2
+
 module.exports = Puck
