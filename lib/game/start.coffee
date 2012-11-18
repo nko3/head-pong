@@ -18,26 +18,26 @@ class Game
 
   mainLoop: ->
     @puck.move(@paddle1, @paddle2)
-    if @p1socket
-      @p1socket.emit('puck_pos', @puck.x, @puck.y)
-    else
-      @paddle1.ai(@puck)
-      @updatePaddle(1, @paddle1.x)
-    if @p2socket
-      @p2socket.emit('puck_pos', @puck.x, @puck.y)
-    else
-      @paddle2.ai(@puck)
-      @updatePaddle(2, @paddle2.x)
+    @communicateWithClient(1)
+    @communicateWithClient(2)
 
     setTimeout =>
       @mainLoop()
     , 1000/60
 
-  updatePaddle: (number, x) ->
-    if number == 1
-      @paddle1.x = x
+  communicateWithClient: (number) ->
+    socket = eval("this.p#{number}socket")
+    paddle = eval("this.paddle#{number}")
+
+    if socket
+      socket.emit('puck_pos', @puck.x, @puck.y)
     else
-      @paddle2.x = x
+      paddle.ai(@puck)
+      @updatePaddle(number, paddle.x)
+
+  updatePaddle: (number, x) ->
+    paddle = eval("this.paddle#{number}")
+    paddle.x = x
 
     @p1socket.emit("paddle_#{number}_pos", x) if @p1socket?
     @p2socket.emit("paddle_#{number}_pos", x) if @p2socket?
