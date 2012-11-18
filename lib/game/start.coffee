@@ -12,6 +12,7 @@ class Game
     @p2 = new Player(null, 'bottom', @)
     @open = true
     @mainLoop()
+    @communicate()
 
   join: (socket) ->
     if @p1.live then @p2.enliven(socket) else @p1.enliven(socket)
@@ -19,13 +20,19 @@ class Game
 
   mainLoop: ->
     @puck.move(@p1.paddle, @p2.paddle)
+
+    setTimeout =>
+      @mainLoop()
+    , 1000/60
+
+  communicate: ->
     @tellPlayers('puck_pos', @puck.x, @puck.y)
     @p1.movePaddle(@puck)
     @p2.movePaddle(@puck)
 
     setTimeout =>
-      @mainLoop()
-    , 1000/60
+      @communicate()
+    , 100
 
   tellPlayers: (message, args...) ->
     @p2.socket.emit(message, args...) if @p2 && @p2.socket && @p2.live

@@ -3,6 +3,6 @@ class Paddle
 
   ai: (puck) ->
     distance = @x - puck.x
-    @x -= distance/30
+    @x -= distance/10
 
 module.exports = Paddle
