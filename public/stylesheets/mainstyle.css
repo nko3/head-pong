@@ -215,3 +215,8 @@ footer a{
 	color: #20B1B9;
 }
 
+#description h4 a {
+	color: #20B1B9;
+	text-decoration: none;
+}
+
