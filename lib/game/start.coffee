@@ -39,8 +39,6 @@ class Game
     else
       @paddle2.x = x
 
-    console.log('updating paddle')
-
     @p1socket.emit("paddle_#{number}_pos", x) if @p1socket?
     @p2socket.emit("paddle_#{number}_pos", x) if @p2socket?
 
