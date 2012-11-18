@@ -5,15 +5,16 @@ mainLoop = () ->
   #updateFromMouse() #handled in tracking
 
   drawBackground()
-  paddle1.draw()
-  paddle2.draw()
+  myPaddle.draw()
+  otherPaddle.draw()
+  puck.move(myPaddle, otherPaddle)
   for explosion in explosions
     explosion.draw()
 
 animationLoop = () ->
   setTimeout(animationLoop, 1000/20)
-  paddle1.updateFrame()
-  paddle2.updateFrame()
+  myPaddle.updateFrame()
+  otherPaddle.updateFrame()
   for n in [1..4]
     explosions.push(new Explosion(puck.x - 20 + Math.random()*40, puck.y - 20 + Math.random()*40))
 
@@ -32,8 +33,9 @@ drawBackground = ->
   ctx.fillStyle = "rgb(#{color},#{color},#{color})"
   ctx.fillRect(0,0,canvas.width,canvas.height)
 
-updateFromMouse = ->
-  socket.emit('mouse_pos', mousex)
+# updateFromMouse = ->
+#   myPaddle.x = mousex
+#   socket.emit('mouse_pos', mousex)
 
 start = ->
   mainLoop()

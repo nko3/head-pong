@@ -67,6 +67,8 @@ track = ->
 
 send_coordinates = (x, y) ->
   socket.emit('mouse_pos', x)
+  myPaddle.x = x
+  console.log("x position: #{x} for paddle: #{myPaddle}")
   $("#coordinates").html("(#{x}, #{y})")
 
 hide_tracker = ->

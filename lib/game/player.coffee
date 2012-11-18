@@ -15,6 +15,7 @@ class Player
   enliven: (socket) ->
     @live = true
     @socket = socket
+    @socket.emit('live', @position)
     @setPositionEvent()
     @game.tellPlayers('other_connect')
 

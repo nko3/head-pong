@@ -1,6 +1,7 @@
+#intended API: constructor, move, x, y, dx, dy
 class Puck
   constructor: (@radius) ->
-    @reset()
+    @_reset()
 
   move: (paddle1, paddle2) ->
     @x += @dx
@@ -13,29 +14,28 @@ class Puck
       @x = global.canvas_width - @radius
       @dx *= -1
     if @y < @radius
-      @reset()
+      @_reset()
     if @y > global.canvas_height - @radius
-      @reset()
+      @_reset()
 
-    if @collidedWith(paddle1)
+    if @_collidedWith(paddle1)
+      @dx += (Math.random()*10 - 5)
       @dy = Math.abs(@dy)
       @dy += 0.2
+      @y = paddle1.y + paddle1.height + @radius
+    else if @_collidedWith(paddle2)
       @dx += (Math.random()*10 - 5)
-      @y = paddle1.y + paddle1.height/2 + @radius
-
-    if @collidedWith(paddle2)
       @dy = Math.abs(@dy) * -1
       @dy -= 0.2
-      @dx += (Math.random()*10 - 5)
       @y = paddle2.y - paddle2.height/2 - @radius
 
-  collidedWith: (paddle) ->
+  _collidedWith: (paddle) ->
     if @x - @radius < paddle.x + paddle.width/2 && @x + @radius > paddle.x - paddle.width/2
       if (@y - @radius < paddle.y + paddle.height/2 && @y > paddle.y) || (@y + @radius > paddle.y - paddle.height/2 && @y < paddle.y)
         return true
     return false
 
-  reset: ->
+  _reset: ->
     @x = global.canvas_width/2
     @y = global.canvas_height/2
     @dx = Math.random()*10 - 5

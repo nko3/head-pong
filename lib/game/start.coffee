@@ -26,7 +26,7 @@ class Game
     , 1000/60
 
   communicate: ->
-    @tellPlayers('puck_pos', @puck.x, @puck.y)
+    @tellPlayers('puck_pos', @puck.x, @puck.y, @puck.dx, @puck.dy)
     @p1.movePaddle(@puck)
     @p2.movePaddle(@puck)
 
