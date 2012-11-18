@@ -1,5 +1,5 @@
 class Paddle
-  constructor: (@x, @y, @width, @height, @socket) ->
+  constructor: (@x, @y, @width, @height) ->
 
   ai: (puck) ->
     distance = @x - puck.x

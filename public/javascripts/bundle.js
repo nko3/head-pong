@@ -545,31 +545,6 @@ require.define("/javascripts/canvas.js",function(require,module,exports,__dirnam
 }());
 });
 
-require.define("/javascripts/init.js",function(require,module,exports,__dirname,__filename,process,global){(function(){
-  Puck = require('./puck')
-  Paddle = require('./paddle')
-
-  puck = new Puck(100, 100, 10)
-  paddle1 = new Paddle(50, 50, 150, 40, 'img/redp.png')
-  paddle2 = new Paddle(550, 550, 150, 40, 'img/bluep.png')
-  explosions = []
-
-  socket.on('paddle_1_pos', function(x){
-    paddle1.x = x
-  })
-  socket.on('paddle_2_pos', function(x){
-    paddle2.x = x
-  })
-  socket.on('other_connect', function(){
-    $('#message').html("The being that you are playing against passes the turing test")
-  })
-  socket.on('other_disconnect', function(){
-    $('#message').html("Please enjoy battling your robot overlords while we search for another player")
-  })
-}())
-
-});
-
 require.define("/javascripts/puck.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
   var Puck;
 
@@ -592,45 +567,6 @@ require.define("/javascripts/puck.coffee",function(require,module,exports,__dirn
   })();
 
   module.exports = Puck;
-
-}).call(this);
-
-});
-
-require.define("/javascripts/paddle.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var Paddle;
-
-  Paddle = (function() {
-
-    function Paddle(x, y, width, height, src) {
-      this.x = x;
-      this.y = y;
-      this.width = width;
-      this.height = height;
-      this.sprites = new Image();
-      this.sprites.src = src;
-      this.currentFrame = 0;
-      this.frameWidth = 167;
-      this.frameHeight = 60;
-      this.totalFrames = 7;
-    }
-
-    Paddle.prototype.updateFrame = function() {
-      this.currentFrame += 1;
-      if (this.currentFrame >= this.totalFrames) {
-        return this.currentFrame = 0;
-      }
-    };
-
-    Paddle.prototype.draw = function() {
-      return ctx.drawImage(this.sprites, this.currentFrame * this.frameWidth, 0, this.frameWidth, this.frameHeight, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
-    };
-
-    return Paddle;
-
-  })();
-
-  module.exports = Paddle;
 
 }).call(this);
 
@@ -735,6 +671,71 @@ require.define("/javascripts/explosion.coffee",function(require,module,exports,_
   })();
 
   module.exports = Explosion;
+
+}).call(this);
+
+});
+
+require.define("/javascripts/init.js",function(require,module,exports,__dirname,__filename,process,global){(function(){
+  Puck = require('./puck')
+  Paddle = require('./paddle')
+
+  puck = new Puck(100, 100, 10)
+  paddle1 = new Paddle(50, 50, 150, 40, 'img/redp.png')
+  paddle2 = new Paddle(550, 550, 150, 40, 'img/bluep.png')
+  explosions = []
+
+  socket.on('paddle_top_pos', function(x){
+    paddle1.x = x
+  })
+  socket.on('paddle_bottom_pos', function(x){
+    paddle2.x = x
+  })
+  socket.on('other_connect', function(){
+    $('#message').html("The being that you are playing against passes the turing test")
+  })
+  socket.on('other_disconnect', function(){
+    $('#message').html("Please enjoy battling your robot overlords while we search for another player")
+  })
+}())
+
+});
+
+require.define("/javascripts/paddle.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  var Paddle;
+
+  Paddle = (function() {
+
+    function Paddle(x, y, width, height, src) {
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+      this.sprites = new Image();
+      this.sprites.src = src;
+      this.currentFrame = 0;
+      this.frameWidth = 167;
+      this.frameHeight = 60;
+      this.totalFrames = 7;
+    }
+
+    Paddle.prototype.updateFrame = function() {
+      this.currentFrame += 1;
+      if (this.currentFrame >= this.totalFrames) {
+        return this.currentFrame = 0;
+      }
+    };
+
+    Paddle.prototype.draw = function() {
+      console.log(this.x);
+      return ctx.drawImage(this.sprites, this.currentFrame * this.frameWidth, 0, this.frameWidth, this.frameHeight, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+    };
+
+    return Paddle;
+
+  })();
+
+  module.exports = Paddle;
 
 }).call(this);
 

@@ -39,7 +39,7 @@ global.canvas_height = 600
 games = []
 
 io.sockets.on 'connection', (socket) ->
-  console.log('you have connected')
+  console.log("you have connected, there are currently #{games.length} games")
 
   if games.length == 0
     games.push(new Game(socket))

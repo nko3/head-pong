@@ -7,10 +7,10 @@
   paddle2 = new Paddle(550, 550, 150, 40, 'img/bluep.png')
   explosions = []
 
-  socket.on('paddle_1_pos', function(x){
+  socket.on('paddle_top_pos', function(x){
     paddle1.x = x
   })
-  socket.on('paddle_2_pos', function(x){
+  socket.on('paddle_bottom_pos', function(x){
     paddle2.x = x
   })
   socket.on('other_connect', function(){

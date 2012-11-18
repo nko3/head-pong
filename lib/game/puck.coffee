@@ -1,7 +1,5 @@
 class Puck
-  constructor: (@radius, @socket) ->
-    @x = 1
-    @y = 1
+  constructor: (@radius) ->
     @reset()
 
   move: (paddle1, paddle2) ->
