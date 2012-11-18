@@ -3,17 +3,21 @@ class Puck
     @x += @dx
     @y += @dy
 
+    #bouncing off wall
     if @x < @radius
-      @x = @radius
+      @x = Math.abs(@x - @radius) + @radius
       @dx *= -1
     if @x > global.canvas_width - @radius
-      @x = global.canvas_width - @radius
+      @x = global.canvas_width - @radius - Math.abs(@x + @radius - global.canvas_width)
       @dx *= -1
+
+    #falling off edge
     if @y < @radius
       @_reset()
     if @y > global.canvas_height - @radius
       @_reset()
 
+    #hitting paddle
     if @_collidedWith(paddle1)
       @dx += (Math.random()*10 - 5)
       @dy = Math.abs(@dy)

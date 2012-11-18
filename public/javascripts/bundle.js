@@ -578,6 +578,43 @@ require.define("/public/javascripts/init.js",function(require,module,exports,__d
 
 });
 
+require.define("/public/javascripts/puck.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
+  var ClientPuck, Puck,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Puck = require('../../lib/shared/puck');
+
+  ClientPuck = (function(_super) {
+
+    __extends(ClientPuck, _super);
+
+    function ClientPuck(x, y, radius) {
+      var _this = this;
+      this.x = x;
+      this.y = y;
+      this.radius = radius;
+      this.color = 'black';
+      socket.on('puck_pos', function(x, y, dx, dy) {
+        _this.x = x;
+        _this.y = y;
+        _this.dx = dx;
+        return _this.dy = dy;
+      });
+    }
+
+    ClientPuck.prototype._reset = function() {};
+
+    return ClientPuck;
+
+  })(Puck);
+
+  module.exports = ClientPuck;
+
+}).call(this);
+
+});
+
 require.define("/public/javascripts/paddle.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
   var Paddle;
 
@@ -748,11 +785,11 @@ require.define("/lib/shared/puck.coffee",function(require,module,exports,__dirna
       this.x += this.dx;
       this.y += this.dy;
       if (this.x < this.radius) {
-        this.x = this.radius;
+        this.x = Math.abs(this.x - this.radius) + this.radius;
         this.dx *= -1;
       }
       if (this.x > global.canvas_width - this.radius) {
-        this.x = global.canvas_width - this.radius;
+        this.x = global.canvas_width - this.radius - Math.abs(this.x + this.radius - global.canvas_width);
         this.dx *= -1;
       }
       if (this.y < this.radius) {
@@ -788,43 +825,6 @@ require.define("/lib/shared/puck.coffee",function(require,module,exports,__dirna
   })();
 
   module.exports = Puck;
-
-}).call(this);
-
-});
-
-require.define("/public/javascripts/puck.coffee",function(require,module,exports,__dirname,__filename,process,global){(function() {
-  var ClientPuck, Puck,
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-  Puck = require('../../lib/shared/puck');
-
-  ClientPuck = (function(_super) {
-
-    __extends(ClientPuck, _super);
-
-    function ClientPuck(x, y, radius) {
-      var _this = this;
-      this.x = x;
-      this.y = y;
-      this.radius = radius;
-      this.color = 'black';
-      socket.on('puck_pos', function(x, y, dx, dy) {
-        _this.x = x;
-        _this.y = y;
-        _this.dx = dx;
-        return _this.dy = dy;
-      });
-    }
-
-    ClientPuck.prototype._reset = function() {};
-
-    return ClientPuck;
-
-  })(Puck);
-
-  module.exports = ClientPuck;
 
 }).call(this);
 
