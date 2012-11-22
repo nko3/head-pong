@@ -1,4 +1,10 @@
-# Hello Staunch Team!
+# Head Pong
+Yep, pong played with your head.
+
+http://handofpong.com/
+
+## Node Nockout contest
+http://2012.nodeknockout.com/teams/staunch-team
 
 ## Deploy instructions
 
