@@ -23,7 +23,8 @@
     "request": "~2.12.0"
   },
   "devDependencies": {
-    "node-dev": "~0.2.8"
+    "node-dev": "~0.2.8",
+    "jasmine-node": "~1.0.26"
   },
   "engines": {
     "node": "0.8.x"

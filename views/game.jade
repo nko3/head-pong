@@ -1,60 +1,38 @@
-doctype 5
-html(lang="en")
-  head
-    title= "HeadPong"
-    link(rel='stylesheet', href='/stylesheets/mainstyle.css')
-    link(rel='stylesheet', href='/stylesheets/canvas.css')
-    link(rel='stylesheet', href='/stylesheets/video.css')
-  body
-    header
-      h1="HeadPong"
-      p="I didn't choose the pong life, the pong life chose me"
-    nav
-      ul
-        li
-          a(href="/")="Home"
-        li
-          a(href="/game")="Play"
-        li
-          a(href="/about")="About"
-        li#vote
-          iframe(src="http://nodeknockout.com/iframe/staunch-team", frameborder=0, scrolling="no", allowtransparency=true, width=115, height=25)
-    section#gamezone
-      #side
-        #wpcamera
-          video#camvideo(autoplay, style="float:left; margin-right:1em;", class="flip-horizontal", width=180, height=175)
-            Your browser do not support video, move on! user Chrome instead.
-          #debug(style="display:none;")
-            #coordinates (,)
-            hr
-            button#camerabutton Start camera
-            br
-            button#stopbutton Stop camera
-            br
-            button#trackbutton Toogle tracking
-        #button
-          iframe(src="http://nodeknockout.com/iframe/staunch-team", frameborder=0, scrolling="no", allowtransparency=true, width=115, height=25)
-        #message
-          p="Waiting for player 2..."
+extends layout
 
-      canvas#pong(width=800, height=600, style="background-color:#aaa")
+block content
+  section#gamezone
+    #side
+      #wpcamera
+        video#camvideo(autoplay, style="float:left; margin-right:1em;", class="flip-horizontal", width=180, height=175)
+          Your browser do not support video, move on! user Chrome instead.
+        #debug(style="display:none;")
+          #coordinates (,)
+          hr
+          button#camerabutton Start camera
+          br
+          button#stopbutton Stop camera
+          br
+          button#trackbutton Toogle tracking
+      #button
+        iframe(src="http://nodeknockout.com/iframe/staunch-team", frameborder=0, scrolling="no", allowtransparency=true, width=115, height=25)
+      #message
+        p="Waiting for player 2..."
 
-    footer
-      p
-        a(href="http://nodeknockout.com/teams/staunch-team")="a StaunchTeam Project"
+    canvas#pong(width=800, height=600, style="background-color:#aaa")
 
-    #tracker(style="position:absolute; border-style:dashed; display:none;")
+  #tracker(style="position:absolute; border-style:dashed; display:none;")
 
-    script(src='/socket.io/socket.io.js')
-    script(src='/javascripts/bundle.js')
+  script(src='/socket.io/socket.io.js')
+  script(src='/javascripts/bundle.js')
 
 
-    script(src='/camera/smoother.js')
-    script(src='/camera/objectdetect.js')
-    script(src='/classifier/objectdetect.frontalface.js')
+  script(src='/camera/smoother.js')
+  script(src='/camera/objectdetect.js')
+  script(src='/classifier/objectdetect.frontalface.js')
 
-    script(src='/javascripts/jquery.js')
-    script(src='/camera/jquery.objectdetect.js')
+  script(src='/javascripts/jquery.js')
+  script(src='/camera/jquery.objectdetect.js')
 
-    script(src='/camera/usermedia.js')
-    script(src='/camera/tracking.js')
+  script(src='/camera/usermedia.js')
+  script(src='/camera/tracking.js')

@@ -1,81 +1,50 @@
+#Game knows:
+#Player API (creation, live, enliven, communicateWithClient, socket)
+#Puck API (creation, move, x, y)
+#'top' and 'bottom' as keywords to be sent to the client <- probably not good
 class Game
   constructor: (socket) ->
     Puck = require('./puck')
-    Paddle = require('./paddle')
+    Player = require('./player')
 
-    @puck = new Puck(10, socket)
-    @paddle1 = new Paddle(50, 50, 150, 40, socket)
-    @paddle2 = new Paddle(550, 550, 150, 40, socket)
+    @puck = new Puck(20)
+    @p1 = new Player(socket, 'top', @)
+    @p2 = new Player(null, 'bottom', @)
     @open = true
-    @newSocket(socket)
     @mainLoop()
-    @x = 100
-    @y = 100
+    @communicate()
 
   join: (socket) ->
-    @newSocket(socket)
+    if @p1.live then @p2.enliven(socket) else @p1.enliven(socket)
     @open = false
 
   mainLoop: ->
-    @puck.move(@paddle1, @paddle2)
-    if @p1socket
-      @p1socket.emit('puck_pos', @puck.x, @puck.y)
-    else
-      @paddle1.ai(@puck)
-      @updatePaddle(1, @paddle1.x)
-    if @p2socket
-      @p2socket.emit('puck_pos', @puck.x, @puck.y)
-    else
-      @paddle2.ai(@puck)
-      @updatePaddle(2, @paddle2.x)
+    @puck.move(@p1.paddle, @p2.paddle)
 
     setTimeout =>
       @mainLoop()
-    , 1000/60
+    , 1000/30
 
-  updatePaddle: (number, x) ->
-    if number == 1
-      @paddle1.x = x
+  communicate: ->
+    @tellPlayers('puck_pos', @puck.x, @puck.y, @puck.dx, @puck.dy)
+    @p1.movePaddle(@puck)
+    @p2.movePaddle(@puck)
+
+    setTimeout =>
+      @communicate()
+    , 100
+
+  tellPlayers: (message, args...) ->
+    @p2.socket.emit(message, args...) if @p2 && @p2.socket && @p2.live
+    @p1.socket.emit(message, args...) if @p1 && @p1.socket && @p1.live
+
+  playerLeaves: ->
+    if @p1.live or @p2.live
+      @open = true
+      console.log("You've shut down, leaving 1 player")
     else
-      @paddle2.x = x
-
-    console.log('updating paddle')
-
-    @p1socket.emit("paddle_#{number}_pos", x) if @p1socket?
-    @p2socket.emit("paddle_#{number}_pos", x) if @p2socket?
-
-  newSocket: (socket) ->
-    if @p1socket
-      socket.on 'mouse_pos', (x) =>
-        @updatePaddle(2, x)
-      socket.on 'disconnect', (x) =>
-        if @p1socket and @p1socket != null
-          @p2socket = null
-          @open = true
-          console.log('p2 has shut down, leaving player 1')
-          @p1socket.emit('other_disconnect')
-        else
-          @open = false
-          console.log('p2 has shut down, leaving the game empty')
-      @p2socket = socket
-      if @p1socket
-        @p2socket.emit('other_connect')
-        @p1socket.emit('other_connect')
-    else
-      socket.on 'mouse_pos', (x) =>
-        @updatePaddle(1, x)
-      socket.on 'disconnect', (x) =>
-        if @p2socket and @p2socket != null
-          @p1socket = null
-          @open = true
-          @p2socket.emit('other_disconnect')
-          console.log('p1 has shut down, leaving player 2')
-        else
-          @open = false
-          console.log('p1 has shut down, leaving the game empty')
-      @p1socket = socket
-      if @p2socket
-        @p2socket.emit('other_connect')
-        @p1socket.emit('other_connect')
+      @open = false
+      console.log("You've shut down, making the room empty")
+    @tellPlayers('other_disconnect')
 
 module.exports = Game
