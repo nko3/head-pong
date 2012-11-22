@@ -12,7 +12,7 @@ app.configure ->
   app.set "view engine", "jade"
 
 app.get "/", (req, res) ->
-    res.render "index"
+  res.render "index"
 
 app.get "/game", (req, res) ->
   res.render "game"
@@ -21,10 +21,13 @@ app.get "/about", (req, res) ->
   res.render "about"
 
 app.get "/camera", (req, res) ->
-    res.render "camera"
+  res.render "camera"
 
 app.get "/pong", (req, res) ->
-    res.render "pong"
+  res.render "pong"
+
+app.get "/preview", (req, res) ->
+  res.render "preview"
 
 server = http.createServer(app).listen app.get('port'), ->
   console.log("Express server listening on port " + app.get('port'))
@@ -39,7 +42,7 @@ global.canvas_height = 600
 games = []
 
 io.sockets.on 'connection', (socket) ->
-  console.log('you have connected')
+  console.log("you have connected, there are currently #{games.length} games")
 
   if games.length == 0
     games.push(new Game(socket))

@@ -1,35 +1,18 @@
-doctype 5
-html(lang="en")
-  head
-    title= "HeadPong"
-    link(rel='stylesheet', href='/stylesheets/mainstyle.css')
-    link(rel='stylesheet', href='/stylesheets/canvas.css')
-    link(rel='stylesheet', href='/stylesheets/video.css')
-  body
-    header
-      h1="HeadPong"
-      p="I didn't choose the pong life, the pong life chose me"
-    nav
-      ul
-        li
-          a(href="/")="Home"
-        li
-          a(href="/game#gamezone")="Play"
-        li
-          a(href="/about")="About"
-        li#vote
-          iframe(src="http://nodeknockout.com/iframe/staunch-team", frameborder=0, scrolling="no", allowtransparency=true, width=115, height=25)
-    section#about
-      #description
-        p="This a project made in the Node.js Knockout by a team of folks really interested in learning and having a great time while coding & deploying."
-        h2="Le Team"
-        h3="Oscar Rendon"
-        h4="@orendon"
-        h3="Jeffrey Biles"
-        h4="@jeffreybiles"
-        h4="@sriptcaster"
-        h3="Pablo Velasquez"
-        h4="@pablovem"
-    footer
-      p
-        a(href="http://nodeknockout.com/teams/staunch-team")="a StaunchTeam Project"
+extends layout
+
+block content
+  section#about
+    #description
+      p="This a project made in the Node.js Knockout by a team of folks really interested in learning and having a great time while coding & deploying."
+      h2="Le Team"
+      h3="Oscar Rendon"
+      h4
+        a(href='http://twitter.com/orendon')="@orendon"
+      h3="Jeffrey Biles"
+      h4
+        a(href='http://twitter.com/jeffreybiles')="@jeffreybiles"
+      h4
+        a(href='http://twitter.com/scriptcaster')="@sriptcaster"
+      h3="Pablo Velasquez"
+      h4
+        a(href='http://twitter.com/scriptcaster')="@pablovem"

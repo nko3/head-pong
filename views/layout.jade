@@ -1,0 +1,27 @@
+doctype 5
+html(lang="en")
+  head
+    title= "HeadPong"
+    link(rel='stylesheet', href='/stylesheets/mainstyle.css')
+    link(rel='stylesheet', href='/stylesheets/canvas.css')
+    link(rel='stylesheet', href='/stylesheets/video.css')
+  body
+    header
+      h1="HeadPong"
+      p="I didn't choose the pong life, the pong life chose me"
+    nav
+      ul
+        li
+          a(href="/")="Home"
+        li
+          a(href="/game#gamezone")="Play"
+        li
+          a(href="/preview")="Preview"
+        li
+          a(href="/about")="About"
+
+    block content
+
+    footer
+      p
+        a(href="http://nodeknockout.com/teams/staunch-team")="a StaunchTeam Project"

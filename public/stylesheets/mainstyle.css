@@ -215,3 +215,17 @@ footer a{
 	color: #20B1B9;
 }
 
+#description h4 a {
+	color: #20B1B9;
+	text-decoration: none;
+}
+
+#preview iframe {
+	display: block;
+	margin: auto;
+}
+
+#preview h2 {
+	text-align: center;
+}
+

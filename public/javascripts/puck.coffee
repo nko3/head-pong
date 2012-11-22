@@ -1,9 +1,14 @@
+Puck = require('../../lib/shared/puck')
 
-class Puck
+class ClientPuck extends Puck
   constructor: (@x, @y, @radius) ->
     @color = 'black'
-    socket.on 'puck_pos', (x, y) =>
+    socket.on 'puck_pos', (x, y, dx, dy) =>
       @x = x
       @y = y
+      @dx = dx
+      @dy = dy
 
-module.exports = Puck
+  _reset: ->
+
+module.exports = ClientPuck
