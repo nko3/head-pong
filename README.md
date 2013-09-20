@@ -71,3 +71,7 @@ freenode, email us at <all@nodeknockout.com>, or tweet
 [3]: https://github.com/nko3/staunch-team
 [4]: http://handbook.jit.su
 [5]: http://blog.nodeknockout.com/post/35279199042/introduction-to-jitsu-deployment
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nko3/head-pong/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
